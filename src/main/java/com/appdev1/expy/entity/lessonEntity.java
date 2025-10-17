@@ -14,7 +14,7 @@ import jakarta.persistence.OneToMany;
 public class lessonEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private int lessonId;
+    private int lesson_id;
     private String title;
     private String content;
     private String difficulty;
@@ -27,5 +27,65 @@ public class lessonEntity {
     @ManyToOne
     @JoinColumn(name="module_id", nullable=false)
     private ModuleEntity module;
+
+    public int getLesson_id() {
+        return lesson_id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public int getXpReward() {
+        return xpReward;
+    }
+
+    public void setXpReward(int xpReward) {
+        this.xpReward = xpReward;
+    }
+
+    public int getOrderIndex() {
+        return orderIndex;
+    }
+
+    public void setOrderIndex(int orderIndex) {
+        this.orderIndex = orderIndex;
+    }
+
+    public List<activityEntity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(List<activityEntity> activities) {
+        this.activities = activities;
+    }
+
+    public ModuleEntity getModule() {
+        return module;
+    }
+
+    public void setModule(ModuleEntity module) {
+        this.module = module;
+    }
 
 }

@@ -13,7 +13,7 @@ import jakarta.persistence.OneToMany;
 public class leaderboardEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private int leaderboardId;
+    private int leaderboard_id;
     private String name;
     private String periodType;
     private LocalDateTime startDate;
@@ -23,7 +23,7 @@ public class leaderboardEntity {
     List<userEntity> users;
 
     public int getLeaderboardId() {
-        return leaderboardId;
+        return leaderboard_id;
     }
 
     public String getName() {
