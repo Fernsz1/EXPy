@@ -3,8 +3,8 @@ package com.appdev1.expy.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.appdev1.expy.entity.ModuleEntity;
+import com.appdev1.expy.entity.moduleEntity;
 
 @Repository
-public interface ModuleRepository extends JpaRepository<ModuleEntity, Long> {
+public interface moduleRepository extends JpaRepository<moduleEntity, Integer> {
 }

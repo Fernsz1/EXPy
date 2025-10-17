@@ -26,7 +26,7 @@ public class lessonEntity {
 
     @ManyToOne
     @JoinColumn(name="module_id", nullable=false)
-    private ModuleEntity module;
+    private moduleEntity module;
 
     public int getLesson_id() {
         return lesson_id;
@@ -80,11 +80,11 @@ public class lessonEntity {
         this.activities = activities;
     }
 
-    public ModuleEntity getModule() {
+    public moduleEntity getModule() {
         return module;
     }
 
-    public void setModule(ModuleEntity module) {
+    public void setModule(moduleEntity module) {
         this.module = module;
     }
 

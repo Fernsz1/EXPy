@@ -7,36 +7,35 @@ import org.openqa.selenium.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.appdev1.expy.entity.AdminEntity;
-import com.appdev1.expy.repository.AdminRepository;
+import com.appdev1.expy.entity.adminEntity;
 
 @Service
-public class AdminService {
+public class adminService {
 
     @Autowired
-    AdminRepository adminRepository;
+    com.appdev1.expy.repository.adminRepository adminRepository;
 
-    public AdminService(AdminRepository adminRepository) {
+    public adminService(com.appdev1.expy.repository.adminRepository adminRepository) {
         this.adminRepository = adminRepository;
     }
 
     //C
-    public AdminEntity createAdmin(AdminEntity admin) {
+    public adminEntity createAdmin(adminEntity admin) {
         return adminRepository.save(admin);
     }
 
     //R
-    public List<AdminEntity> getAllAdmins() {
+    public List<adminEntity> getAllAdmins() {
         return adminRepository.findAll();
     }
 
-    public Optional<AdminEntity> getAdminById(Long id) {
+    public Optional<adminEntity> getAdminById(int id) {
         return adminRepository.findById(id);
     }
 
     //U
-    public AdminEntity updateAdmin(Long adminid, AdminEntity updatedAdminDetails) {
-        AdminEntity admin;
+    public adminEntity updateAdmin(int adminid, adminEntity updatedAdminDetails) {
+        adminEntity admin;
         try {
             admin = adminRepository.findById(adminid)
                     .orElseThrow(() -> new NoSuchElementException("Admin " + adminid + " does not exist"));
@@ -49,7 +48,7 @@ public class AdminService {
     }
 
     //D
-    public String deleteAdmin(Long adminid) {
+    public String deleteAdmin(int adminid) {
         String msg = "";
         if (adminRepository.findById(adminid) != null){
             adminRepository.deleteById(adminid);
