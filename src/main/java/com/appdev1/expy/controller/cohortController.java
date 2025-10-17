@@ -5,9 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.appdev1.expy.entity.cohortEntity;
@@ -25,7 +29,7 @@ public class cohortController {
         return "Hello World";
     }
 
-    @PostMapping("/createCohort")
+    @PostMapping("/insertCohort")
     public cohortEntity postCohortRecord(@RequestBody cohortEntity cohort) {
         return cohortServ.createCohort(cohort);
     }
@@ -33,6 +37,16 @@ public class cohortController {
     @GetMapping("/getAllCohorts")
     public List<cohortEntity> getAllCohorts() {
         return cohortServ.getAllCohorts();
+    }
+ 
+    @PutMapping("/updateCohort")
+    public cohortEntity updateCohort(@RequestParam int cohort_id, @RequestBody cohortEntity cohort) {
+        return cohortServ.updateCohort(cohort_id, cohort);
+    }
+
+    @DeleteMapping("/deleteCohort")
+    public String deleteCohort(@PathVariable int cohort_id) {
+        return cohortServ.deleteCohort(cohort_id);
     }
     
 }
