@@ -1,16 +1,15 @@
 package com.appdev1.expy.entity;
 
 
+import java.util.List;
+
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
-import java.util.List;
-import jakarta.persistence.ElementCollection;
-import com.appdev1.expy.entity.leaderboardEntity.Leaderboard;
 
 
 @Entity
@@ -35,7 +34,7 @@ public class userEntity {
     private List<String> badgeNames;
 
     @OneToMany(mappedBy = "user")
-    private List<Leaderboard> leaderboards;
+    private List<leaderboardEntity> leaderboards;
     //missing connection to Leaderboard Entity
 
     public userEntity() {
@@ -130,10 +129,10 @@ public class userEntity {
         this.badgeNames = badgeNames;
     }
 
-    public List<Leaderboard> getLeaderboards() {
+    public List<leaderboardEntity> getLeaderboards() {
         return leaderboards;
     }
-    public void setLeaderboards(List<Leaderboard> leaderboards) {
+    public void setLeaderboards(List<leaderboardEntity> leaderboards) {
         this.leaderboards = leaderboards;
     }
 

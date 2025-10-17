@@ -1,17 +1,15 @@
 package com.appdev1.expy.entity;
 
 
+import java.util.List;
+
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
-import java.util.List;
-import jakarta.persistence.ElementCollection;
-import com.appdev1.expy.entity.userEntity;
-import com.appdev1.expy.entity.lessonEntity;
 
 @Entity
 @Table(name="tblActivity")
@@ -36,7 +34,7 @@ public class activityEntity {
     @OneToMany(mappedBy = "activity")
     private List<lessonEntity> lessons;
 
-    //missing connection to Lesson Entity
+    //missing connection to Lesson Entity - RESOLVED
 
     public activityEntity() {
         super();
