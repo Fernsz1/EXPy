@@ -8,7 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -28,11 +29,16 @@ public class activityEntity {
 
     private int xp_reward;
 
-    @OneToMany(mappedBy = "activity")
-    private List<userEntity> users;
-    
-    @OneToMany(mappedBy = "activity")
-    private List<lessonEntity> lessons;
+    // @OneToMany(mappedBy = "activity")
+    // private List<userEntity> users;
+
+    @ManyToOne
+    @JoinColumn(name="lesson_id")
+    private lessonEntity lesson;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private userEntity user;
 
     //missing connection to Lesson Entity - RESOLVED
 
@@ -86,17 +92,17 @@ public class activityEntity {
     public void setXp_reward(int xp_reward) {
         this.xp_reward = xp_reward;
     }
-    public List<userEntity> getUsers() {
-        return users;
+    public userEntity getUsers() {
+        return user;
     }
-    public void setUsers(List<userEntity> users) {
-        this.users = users;
+    public void setUsers(userEntity user) {
+        this.user = user;
     }
-    public List<lessonEntity> getLessons() {
-        return lessons;
+    public lessonEntity getLessons() {
+        return lesson;
     }
-    public void setLessons(List<lessonEntity> lessons) {
-        this.lessons = lessons;
+    public void setLessons(lessonEntity lessons) {
+        this.lesson = lessons;
     }
 
 }
