@@ -2,6 +2,7 @@ package com.appdev1.expy.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.ArrayList;
 
 @Entity
