@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -33,9 +35,14 @@ public class userEntity {
     @ElementCollection
     private List<String> badgeNames;
 
-    @OneToMany(mappedBy = "user")
-    private List<leaderboardEntity> leaderboards;
+    @ManyToOne
+    @JoinColumn(name = "leaderboard_id")
+    private leaderboardEntity leaderboard;
     //missing connection to Leaderboard Entity
+
+    @OneToMany(mappedBy = "user")
+    private List<activityEntity> activities;
+
 
     public userEntity() {
         super();
@@ -129,11 +136,11 @@ public class userEntity {
         this.badgeNames = badgeNames;
     }
 
-    public List<leaderboardEntity> getLeaderboards() {
-        return leaderboards;
+    public leaderboardEntity getLeaderboards() {
+        return leaderboard;
     }
-    public void setLeaderboards(List<leaderboardEntity> leaderboards) {
-        this.leaderboards = leaderboards;
+    public void setLeaderboards(leaderboardEntity leaderboard) {
+        this.leaderboard = leaderboard;
     }
 
 }

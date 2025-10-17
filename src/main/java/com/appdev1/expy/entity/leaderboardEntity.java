@@ -19,8 +19,9 @@ public class leaderboardEntity {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    @OneToMany(mappedBy="user")
-    List<userEntity> users;
+    @OneToMany(mappedBy = "leaderboard")
+    private List<userEntity> users;
+
 
     public int getLeaderboardId() {
         return leaderboard_id;
