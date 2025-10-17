@@ -1,10 +1,6 @@
 package com.appdev1.expy.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "module_entity")
@@ -12,49 +8,66 @@ public class ModuleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long moduleId;
+    private int module_id;
 
-    private String moduleCode;
-    private String moduleName;
-    private String moduleDescription;
+    @Column(nullable = false)
+    private String code;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String description;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id", nullable = false)
+    private CourseEntity course;
 
     public ModuleEntity() {}
 
-    public ModuleEntity(String moduleCode, String moduleName, String moduleDescription) {
-        this.moduleCode = moduleCode;
-        this.moduleName = moduleName;
-        this.moduleDescription = moduleDescription;
+    public ModuleEntity(String code, String name, String description) {
+        this.code = code;
+        this.name = name;
+        this.description = description;
     }
 
-    public Long getModuleId() {
-        return moduleId;
+    public int getModuleId() {
+        return module_id;
     }
 
-    public void setModuleId(Long moduleId) {
-        this.moduleId = moduleId;
+    public void setModuleId(int module_id) {
+        this.module_id = module_id;
     }
 
     public String getModuleCode() {
-        return moduleCode;
+        return code;
     }
 
-    public void setModuleCode(String moduleCode) {
-        this.moduleCode = moduleCode;
+    public void setModuleCode(String code) {
+        this.code = code;
     }
 
     public String getModuleName() {
-        return moduleName;
+        return name;
     }
 
-    public void setModuleName(String moduleName) {
-        this.moduleName = moduleName;
+    public void setModuleName(String name) {
+        this.name = name;
     }
 
     public String getModuleDescription() {
-        return moduleDescription;
+        return description;
     }
 
-    public void setModuleDescription(String moduleDescription) {
-        this.moduleDescription = moduleDescription;
+    public void setModuleDescription(String description) {
+        this.description = description;
+    }
+
+    public CourseEntity getCourse() {
+        return course;
+    }
+
+    public void setCourse(CourseEntity course) {
+        this.course = course;
     }
 }

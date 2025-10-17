@@ -1,10 +1,8 @@
 package com.appdev1.expy.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "admin_entity")
@@ -12,28 +10,38 @@ public class AdminEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long adminId;
+    private int admin_id;
 
+    @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(nullable = false, unique = true)
     private String email;
-    private String passwordHash;
+
+    @Column(nullable = false)
+    private String password_hash;
+
+    @Column(nullable = false)
     private String role;
+
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ReportEntity> reports = new ArrayList<>();
 
     public AdminEntity() {}
 
-    public AdminEntity(String username, String email, String passwordHash, String role) {
+    public AdminEntity(String username, String email, String password_hash, String role) {
         this.username = username;
         this.email = email;
-        this.passwordHash = passwordHash;
+        this.password_hash = password_hash;
         this.role = role;
     }
 
-    public Long getAdminId() {
-        return adminId; 
+    public int getAdminId() {
+        return admin_id; 
     }
 
-    public void setAdminId(Long adminId) { 
-        this.adminId = adminId;
+    public void setAdminId(int admin_id) {
+        this.admin_id = admin_id;
     }
 
     public String getUsername() { 
@@ -53,17 +61,26 @@ public class AdminEntity {
     }
 
     public String getPasswordHash() { 
-        return passwordHash; 
+        return password_hash; 
     }
 
-    public void setPasswordHash(String passwordHash) { 
-        this.passwordHash = passwordHash;
+    public void setPasswordHash(String password_hash) { 
+        this.password_hash = password_hash;
     }
 
     public String getRole() { 
         return role; 
     }
+
     public void setRole(String role) { 
         this.role = role; 
+    }
+
+    public List<ReportEntity> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<ReportEntity> reports) {
+        this.reports = reports;
     }
 }

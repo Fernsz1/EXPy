@@ -41,7 +41,7 @@ public class ModuleController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ModuleEntity> getModuleById(@PathVariable Long id) {
+    public ResponseEntity<ModuleEntity> getModuleById(@PathVariable int id) {
         return moduleService.getModuleById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -49,13 +49,13 @@ public class ModuleController {
 
     // U
     @PutMapping("/updateModule")
-    public ModuleEntity updateModule(@RequestParam Long moduleId, @RequestBody ModuleEntity updatedModuleDetails) {
+    public ModuleEntity updateModule(@RequestParam int moduleId, @RequestBody ModuleEntity updatedModuleDetails) {
         return moduleService.updateModule(moduleId, updatedModuleDetails);
     }
 
     // D
     @DeleteMapping("/deleteModule/{moduleId}")
-    public String deleteModule(@PathVariable Long moduleId) {
+    public String deleteModule(@PathVariable int moduleId) {
         return moduleService.deleteModule(moduleId);
     }
 }

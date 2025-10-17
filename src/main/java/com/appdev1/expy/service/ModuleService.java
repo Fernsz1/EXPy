@@ -30,12 +30,12 @@ public class ModuleService {
         return moduleRepository.findAll();
     }
 
-    public Optional<ModuleEntity> getModuleById(Long id) {
+    public Optional<ModuleEntity> getModuleById(int id) {
         return moduleRepository.findById(id);
     }
 
     // U
-    public ModuleEntity updateModule(Long moduleId, ModuleEntity updatedModuleDetails) {
+    public ModuleEntity updateModule(int moduleId, ModuleEntity updatedModuleDetails) {
         ModuleEntity module;
         try {
             module = moduleRepository.findById(moduleId)
@@ -50,7 +50,7 @@ public class ModuleService {
     }
 
     // D
-    public String deleteModule(Long moduleId) {
+    public String deleteModule(int moduleId) {
         String msg = "";
         if (moduleRepository.findById(moduleId).isPresent()) {
             moduleRepository.deleteById(moduleId);

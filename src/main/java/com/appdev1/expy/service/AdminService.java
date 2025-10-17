@@ -30,12 +30,12 @@ public class AdminService {
         return adminRepository.findAll();
     }
 
-    public Optional<AdminEntity> getAdminById(Long id) {
+    public Optional<AdminEntity> getAdminById(int id) {
         return adminRepository.findById(id);
     }
 
     //U
-    public AdminEntity updateAdmin(Long adminid, AdminEntity updatedAdminDetails) {
+    public AdminEntity updateAdmin(int adminid, AdminEntity updatedAdminDetails) {
         AdminEntity admin;
         try {
             admin = adminRepository.findById(adminid)
@@ -49,7 +49,7 @@ public class AdminService {
     }
 
     //D
-    public String deleteAdmin(Long adminid) {
+    public String deleteAdmin(int adminid) {
         String msg = "";
         if (adminRepository.findById(adminid) != null){
             adminRepository.deleteById(adminid);

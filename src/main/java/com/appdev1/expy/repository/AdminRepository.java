@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.appdev1.expy.entity.AdminEntity;
 
 @Repository
-public interface AdminRepository extends JpaRepository<AdminEntity, Long> {
+public interface AdminRepository extends JpaRepository<AdminEntity, Integer> {
 }
