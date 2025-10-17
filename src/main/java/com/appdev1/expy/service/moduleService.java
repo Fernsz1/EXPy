@@ -7,36 +7,35 @@ import org.openqa.selenium.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.appdev1.expy.entity.ModuleEntity;
-import com.appdev1.expy.repository.ModuleRepository;
+import com.appdev1.expy.entity.moduleEntity;
 
 @Service
-public class ModuleService {
+public class moduleService {
 
     @Autowired
-    ModuleRepository moduleRepository;
+    com.appdev1.expy.repository.moduleRepository moduleRepository;
 
-    public ModuleService(ModuleRepository moduleRepository) {
+    public moduleService(com.appdev1.expy.repository.moduleRepository moduleRepository) {
         this.moduleRepository = moduleRepository;
     }
 
     // C
-    public ModuleEntity createModule(ModuleEntity module) {
+    public moduleEntity createModule(moduleEntity module) {
         return moduleRepository.save(module);
     }
 
     // R
-    public List<ModuleEntity> getAllModules() {
+    public List<moduleEntity> getAllModules() {
         return moduleRepository.findAll();
     }
 
-    public Optional<ModuleEntity> getModuleById(int id) {
+    public Optional<moduleEntity> getModuleById(int id) {
         return moduleRepository.findById(id);
     }
 
     // U
-    public ModuleEntity updateModule(int moduleId, ModuleEntity updatedModuleDetails) {
-        ModuleEntity module;
+    public moduleEntity updateModule(int moduleId, moduleEntity updatedModuleDetails) {
+        moduleEntity module;
         try {
             module = moduleRepository.findById(moduleId)
                     .orElseThrow(() -> new NoSuchElementException("Module " + moduleId + " does not exist"));

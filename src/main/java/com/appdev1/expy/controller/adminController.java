@@ -14,34 +14,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.appdev1.expy.entity.AdminEntity;
-import com.appdev1.expy.service.AdminService;
+import com.appdev1.expy.entity.adminEntity;
 
 @RestController
 @RequestMapping("/api/admins")
-public class AdminController {
+public class adminController {
 
     @Autowired
-    AdminService adminService;
+    com.appdev1.expy.service.adminService adminService;
 
-    public AdminController(AdminService adminService) {
+    public adminController(com.appdev1.expy.service.adminService adminService) {
         this.adminService = adminService;
     }
 
     //C
     @PostMapping("/insertAdmin")
-    public AdminEntity createAdmin(@RequestBody AdminEntity admin) {
+    public adminEntity createAdmin(@RequestBody adminEntity admin) {
         return adminService.createAdmin(admin);
     }
 
     //R
     @GetMapping("/getAllAdmins")
-    public List<AdminEntity> getAllAdmins() {
+    public List<adminEntity> getAllAdmins() {
         return adminService.getAllAdmins();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AdminEntity> getAdminById(@PathVariable int id) {
+    public ResponseEntity<adminEntity> getAdminById(@PathVariable int id) {
         return adminService.getAdminById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -49,7 +48,7 @@ public class AdminController {
 
     //U
     @PutMapping("/updateAdmin")
-    public AdminEntity updateAdmin(@RequestParam int adminid, @RequestBody AdminEntity updatedAdminDetails) {
+    public adminEntity updateAdmin(@RequestParam int adminid, @RequestBody adminEntity updatedAdminDetails) {
         return adminService.updateAdmin(adminid, updatedAdminDetails);
     }
 

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "module_entity")
-public class ModuleEntity {
+public class moduleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +21,11 @@ public class ModuleEntity {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
-    private CourseEntity course;
+    private courseEntity course;
 
-    public ModuleEntity() {}
+    public moduleEntity() {}
 
-    public ModuleEntity(String code, String name, String description) {
+    public moduleEntity(String code, String name, String description) {
         this.code = code;
         this.name = name;
         this.description = description;
@@ -63,11 +63,11 @@ public class ModuleEntity {
         this.description = description;
     }
 
-    public CourseEntity getCourse() {
+    public courseEntity getCourse() {
         return course;
     }
 
-    public void setCourse(CourseEntity course) {
+    public void setCourse(courseEntity course) {
         this.course = course;
     }
 }

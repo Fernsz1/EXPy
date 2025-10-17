@@ -14,34 +14,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.appdev1.expy.entity.ModuleEntity;
-import com.appdev1.expy.service.ModuleService;
+import com.appdev1.expy.entity.moduleEntity;
 
 @RestController
 @RequestMapping("/api/modules")
-public class ModuleController {
+public class moduleController {
 
     @Autowired
-    ModuleService moduleService;
+    com.appdev1.expy.service.moduleService moduleService;
 
-    public ModuleController(ModuleService moduleService) {
+    public moduleController(com.appdev1.expy.service.moduleService moduleService) {
         this.moduleService = moduleService;
     }
 
     // C
     @PostMapping("/insertModule")
-    public ModuleEntity createModule(@RequestBody ModuleEntity module) {
+    public moduleEntity createModule(@RequestBody moduleEntity module) {
         return moduleService.createModule(module);
     }
 
     // R
     @GetMapping("/getAllModules")
-    public List<ModuleEntity> getAllModules() {
+    public List<moduleEntity> getAllModules() {
         return moduleService.getAllModules();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ModuleEntity> getModuleById(@PathVariable int id) {
+    public ResponseEntity<moduleEntity> getModuleById(@PathVariable int id) {
         return moduleService.getModuleById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -49,7 +48,7 @@ public class ModuleController {
 
     // U
     @PutMapping("/updateModule")
-    public ModuleEntity updateModule(@RequestParam int moduleId, @RequestBody ModuleEntity updatedModuleDetails) {
+    public moduleEntity updateModule(@RequestParam int moduleId, @RequestBody moduleEntity updatedModuleDetails) {
         return moduleService.updateModule(moduleId, updatedModuleDetails);
     }
 

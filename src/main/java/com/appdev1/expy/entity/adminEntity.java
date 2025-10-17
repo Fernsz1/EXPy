@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 @Entity
 @Table(name = "admin_entity")
-public class AdminEntity {
+public class adminEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,11 +25,11 @@ public class AdminEntity {
     private String role;
 
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ReportEntity> reports = new ArrayList<>();
+    private List<reportEntity> reports = new ArrayList<>();
 
-    public AdminEntity() {}
+    public adminEntity() {}
 
-    public AdminEntity(String username, String email, String password_hash, String role) {
+    public adminEntity(String username, String email, String password_hash, String role) {
         this.username = username;
         this.email = email;
         this.password_hash = password_hash;
@@ -76,11 +76,11 @@ public class AdminEntity {
         this.role = role; 
     }
 
-    public List<ReportEntity> getReports() {
+    public List<reportEntity> getReports() {
         return reports;
     }
 
-    public void setReports(List<ReportEntity> reports) {
+    public void setReports(List<reportEntity> reports) {
         this.reports = reports;
     }
 }
