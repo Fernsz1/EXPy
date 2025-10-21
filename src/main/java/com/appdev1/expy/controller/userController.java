@@ -1,6 +1,9 @@
 package com.appdev1.expy.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.appdev1.expy.entity.userEntity;
+import com.appdev1.expy.entity.StudentEntity;
+import com.appdev1.expy.entity.UserEntity;
 import com.appdev1.expy.service.userService;
 
 @RestController
@@ -22,21 +26,28 @@ public class userController {
     userService userServ;
 
         @PostMapping("/insertUser")
-        public userEntity createUser(@RequestBody userEntity user) {
+        public UserEntity createUser(@RequestBody UserEntity user) {
             return userServ.createUser(user);
         }
 
         @GetMapping("/getAllUsers")
-        public String getMethodName(@RequestParam String param) {
-            return new String();
+        public List<UserEntity> getAllUsers() {
+            return userServ.getAllUsers();
+        }
+
+        @GetMapping("/{id}")
+        public ResponseEntity<UserEntity> getUserById(@PathVariable int id) {
+            return userServ.getUserById(id)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
         }
 
         @PutMapping("/updateUser")
-        public userEntity updateUser(@RequestParam int user_id, @RequestBody userEntity userDetails) {
+        public UserEntity updateUser(@RequestParam int user_id, @RequestBody UserEntity userDetails) {
             return userServ.updateUser(user_id, userDetails); 
         }
         
-        @DeleteMapping("/deleteUser")
+        @DeleteMapping("/deleteUser/{user_id}")
         public String deleteUser(@PathVariable int user_id) {
             return userServ.deleteUser(user_id);
         }

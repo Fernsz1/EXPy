@@ -2,11 +2,12 @@ package com.appdev1.expy.service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
-import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.appdev1.expy.entity.courseEntity;
+import com.appdev1.expy.entity.CourseEntity;
 import com.appdev1.expy.repository.courseRepository;
 
 @Service
@@ -20,18 +21,22 @@ public class courseService {
     }
 
     // C
-    public courseEntity createCourse(courseEntity course) {
+    public CourseEntity createCourse(CourseEntity course) {
         return courseRepository.save(course);
     }
 
     // R
-    public List<courseEntity> getAllCourses() {
+    public List<CourseEntity> getAllCourses() {
         return courseRepository.findAll();
     }
 
+    public Optional<CourseEntity> getCourseById(int id) {
+        return courseRepository.findById(id);
+    }
+
     // U
-    public courseEntity updateCourse(int course_id, courseEntity course) {
-        courseEntity newCourse = null;
+    public CourseEntity updateCourse(int course_id, CourseEntity course) {
+        CourseEntity newCourse = null;
         try {
             newCourse = courseRepository.findById(course_id).get();
             newCourse.setTitle(course.getTitle());

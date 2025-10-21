@@ -1,11 +1,18 @@
 package com.appdev1.expy.entity;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
 @Entity
-@Table(name = "report_entity")
-public class reportEntity {
+@Table(name = "tblReport")
+public class ReportEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,32 +22,18 @@ public class reportEntity {
     private LocalDateTime generatedDate;
     private String data;
 
-    // Optional many-to-one relationship to AdminEntity
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "admin_id", referencedColumnName = "admin_id")
-    private adminEntity admin;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "instructor_id", referencedColumnName = "user_id")
+    private InstructorEntity instructor;
 
-    // Optional many-to-one relationship to UserEntity
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private userEntity user;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "student_id", referencedColumnName = "user_id")
+    private StudentEntity student;
 
-    public reportEntity() {}
-
-    public reportEntity(String type, LocalDateTime generatedDate, String data, adminEntity admin, userEntity user) {
-        this.type = type;
-        this.generatedDate = generatedDate;
-        this.data = data;
-        this.admin = admin;
-        this.user = user;
-    }
+    public ReportEntity() {}
 
     public int getReportId() {
         return reportId;
-    }
-
-    public void setReportId(int reportId) {
-        this.reportId = reportId;
     }
 
     public String getType() {
@@ -67,19 +60,21 @@ public class reportEntity {
         this.data = data;
     }
 
-    public adminEntity getAdmin() {
-        return admin;
+    public InstructorEntity getInstructor() {
+        return instructor;
     }
 
-    public void setAdmin(adminEntity admin) {
-        this.admin = admin;
+    public void setInstructor(InstructorEntity instructor) {
+        this.instructor = instructor;
     }
 
-    public userEntity getUser() {
-         return user;
+    public StudentEntity getStudent() {
+        return student;
     }
 
-    public void setUser(userEntity user) {
-        this.user = user;
+    public void setStudent(StudentEntity student) {
+        this.student = student;
     }
+
+
 }

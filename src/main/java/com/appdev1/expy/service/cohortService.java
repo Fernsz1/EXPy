@@ -2,11 +2,12 @@ package com.appdev1.expy.service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
-import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.appdev1.expy.entity.cohortEntity;
+import com.appdev1.expy.entity.CohortEntity;
 import com.appdev1.expy.repository.cohortRepository;
 
 @Service
@@ -20,23 +21,22 @@ public class cohortService {
     }
 
     //C
-    public cohortEntity createCohort(cohortEntity cohort) {
+    public CohortEntity createCohort(CohortEntity cohort) {
         return cohortRepository.save(cohort);
     }
 
     //R
-    public List<cohortEntity> getAllCohorts() {
+    public List<CohortEntity> getAllCohorts() {
         return cohortRepository.findAll();
     }
 
     //U
-    public cohortEntity updateCohort(int cohort_id, cohortEntity cohort) {
-        cohortEntity existingCohort = null;
+    public CohortEntity updateCohort(int cohort_id, CohortEntity cohort) {
+        CohortEntity existingCohort = null;
         try {
             existingCohort = cohortRepository.findById(cohort_id).get();
             existingCohort.setName(cohort.getName());
             existingCohort.setDescription(cohort.getDescription());
-            existingCohort.setMemberIds(cohort.getMemberIds());
     
             cohortRepository.save(existingCohort);
         } catch (NoSuchElementException e) {
@@ -44,6 +44,10 @@ public class cohortService {
         }
         
         return existingCohort;
+    }
+
+    public Optional<CohortEntity> getCohortById(int id) {
+        return cohortRepository.findById(id);
     }
     
     //D

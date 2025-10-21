@@ -3,14 +3,19 @@ package com.appdev1.expy.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 
 @Entity
-public class leaderboardEntity {
+@Table(name="tblLeaderboard")
+public class LeaderboardEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int leaderboard_id;
@@ -19,14 +24,22 @@ public class leaderboardEntity {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    @OneToMany(mappedBy = "leaderboard")
-    private List<userEntity> users;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+        name = "leaderboard_users",
+        joinColumns = @JoinColumn(name = "leaderboard_id"),
+        inverseJoinColumns = @JoinColumn(name = "student_id", referencedColumnName = "user_id")
+    )
+    private List<UserEntity> students;
 
-
-    public int getLeaderboardId() {
-        return leaderboard_id;
+    public LeaderboardEntity() {
+        super();
     }
 
+    public int getLeaderboard_id() {
+        return leaderboard_id;
+    }
+    
     public String getName() {
         return name;
     }
@@ -59,12 +72,13 @@ public class leaderboardEntity {
         this.endDate = endDate;
     }
 
-    public List<userEntity> getUsers() {
-        return users;
+    public List<UserEntity> getStudents() {
+        return students;
     }
 
-    public void setUsers(List<userEntity> users) {
-        this.users = users;
+    public void setStudents(List<UserEntity> students) {
+        this.students = students;
     }
 
+    
 }

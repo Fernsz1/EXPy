@@ -14,8 +14,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "course")
-public class courseEntity {
+@Table(name = "tblCourse")
+public class CourseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,55 +29,51 @@ public class courseEntity {
 
     // One course contains many modules
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<moduleEntity> modules = new ArrayList<>();
+    private List<ModuleEntity> modules = new ArrayList<>();
 
-    public courseEntity() {
+    @OneToMany(mappedBy = "course")
+    private List<CohortEntity> cohorts = new ArrayList<>();
+
+    public CourseEntity() {
         super();
     }
 
-    public courseEntity(String title, String description) {
+    public int getCourse_id() {
+        return course_id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public courseEntity(int course_id, String title, String description) {
-        this.course_id = course_id;
-        this.title = title;
-        this.description = description;
+    public List<ModuleEntity> getModules() {
+        return modules;
     }
 
-    // Getters and Setters
-    public int getCourseId() { 
-        return course_id; 
-    }
-    
-    public void setCourseId(int course_id) { 
-        this.course_id = course_id; 
+    public void setModules(List<ModuleEntity> modules) {
+        this.modules = modules;
     }
 
-    public String getTitle() { 
-        return title; 
-    }
-    
-    public void setTitle(String title) { 
-        this.title = title; 
+    public List<CohortEntity> getCohorts() {
+        return cohorts;
     }
 
-    public String getDescription() { 
-        return description; 
-    }
-    
-    public void setDescription(String description) { 
-        this.description = description; 
+    public void setCohorts(List<CohortEntity> cohorts) {
+        this.cohorts = cohorts;
     }
 
-    public void setModules(List<moduleEntity> modules) { 
-        this.modules = modules; 
-    }
 
-    public void addModule(moduleEntity module) {
-        modules.add(module);
-        module.setCourse(this);
-    }
 
 }

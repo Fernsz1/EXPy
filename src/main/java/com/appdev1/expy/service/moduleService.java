@@ -7,46 +7,47 @@ import org.openqa.selenium.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.appdev1.expy.entity.moduleEntity;
+import com.appdev1.expy.entity.ModuleEntity;
+import com.appdev1.expy.repository.moduleRepository;
 
 @Service
 public class moduleService {
 
     @Autowired
-    com.appdev1.expy.repository.moduleRepository moduleRepository;
+    moduleRepository moduleRepository;
 
     public moduleService(com.appdev1.expy.repository.moduleRepository moduleRepository) {
         this.moduleRepository = moduleRepository;
     }
 
     // C
-    public moduleEntity createModule(moduleEntity module) {
+    public ModuleEntity createModule(ModuleEntity module) {
         return moduleRepository.save(module);
     }
 
     // R
-    public List<moduleEntity> getAllModules() {
+    public List<ModuleEntity> getAllModules() {
         return moduleRepository.findAll();
     }
 
-    public Optional<moduleEntity> getModuleById(int id) {
+    public Optional<ModuleEntity> getModuleById(int id) {
         return moduleRepository.findById(id);
     }
 
     // U
-    public moduleEntity updateModule(int moduleId, moduleEntity updatedModuleDetails) {
-        moduleEntity module;
-        try {
-            module = moduleRepository.findById(moduleId)
-                    .orElseThrow(() -> new NoSuchElementException("Module " + moduleId + " does not exist"));
-            module.setModuleCode(updatedModuleDetails.getModuleCode());
-            module.setModuleName(updatedModuleDetails.getModuleName());
-            module.setModuleDescription(updatedModuleDetails.getModuleDescription());
-        } catch (NoSuchElementException ex) {
-            throw ex;
-        }
+    public ModuleEntity updateModule(int moduleId, ModuleEntity updatedModuleDetails) {
+        ModuleEntity module = moduleRepository.findById(moduleId)
+                .orElseThrow(() -> new NoSuchElementException("Module " + moduleId + " does not exist"));
+        module.setTitle(updatedModuleDetails.getTitle());
+        module.setCode(updatedModuleDetails.getCode());
+        module.setName(updatedModuleDetails.getName());
+        module.setDescription(updatedModuleDetails.getDescription());
+        module.setOrder_index(updatedModuleDetails.getOrder_index());
+        module.setCourse(updatedModuleDetails.getCourse());
+
         return moduleRepository.save(module);
     }
+
 
     // D
     public String deleteModule(int moduleId) {

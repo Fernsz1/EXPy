@@ -3,18 +3,21 @@ package com.appdev1.expy.controller;
 
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import com.appdev1.expy.entity.activityEntity;
-import com.appdev1.expy.service.activityService;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.appdev1.expy.entity.ActivityEntity;
+import com.appdev1.expy.service.activityService;
 
 
 
@@ -25,21 +28,28 @@ public class activityController {
     activityService activityServ;
 
         @PostMapping("/insertActivity")
-        public activityEntity createActivity(@RequestBody activityEntity activity) {
+        public ActivityEntity createActivity(@RequestBody ActivityEntity activity) {
             return activityServ.createActivity(activity);
         }
 
         @GetMapping("/getAllActivities")
-        public List<activityEntity> getAllActivities() {
+        public List<ActivityEntity> getAllActivities() {
             return activityServ.getAllActivities();
         }
 
+        @GetMapping("/{id}")
+        public ResponseEntity<ActivityEntity> getActivityById(@PathVariable int id) {
+            return activityServ.getActivityById(id)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        }
+
         @PutMapping("/updateActivity")
-        public activityEntity updateActivity(@RequestParam int activity_id, @RequestBody activityEntity activityDetails) {
+        public ActivityEntity updateActivity(@RequestParam int activity_id, @RequestBody ActivityEntity activityDetails) {
             return activityServ.updateActivity(activity_id, activityDetails); 
         }
         
-        @DeleteMapping("/deleteActivity")
+        @DeleteMapping("/deleteActivity/{activity_id}")
         public String deleteActivity(@PathVariable int activity_id) {
             return activityServ.deleteActivity(activity_id);
         }

@@ -9,24 +9,30 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
-public class lessonEntity {
+@Table(name="tblLesson")
+public class LessonEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int lesson_id;
     private String title;
     private String content;
     private String difficulty;
-    private int xpReward;
-    private int orderIndex;
+    private int xp_reward;
+    private int order_index;
 
     @OneToMany(mappedBy="lesson")
-    private List<activityEntity> activities;
+    private List<ActivityEntity> activities;
 
     @ManyToOne
     @JoinColumn(name="module_id", nullable=false)
-    private moduleEntity module;
+    private ModuleEntity module;
+
+    public LessonEntity() {
+        super();
+    }
 
     public int getLesson_id() {
         return lesson_id;
@@ -56,36 +62,37 @@ public class lessonEntity {
         this.difficulty = difficulty;
     }
 
-    public int getXpReward() {
-        return xpReward;
+    public int getXp_reward() {
+        return xp_reward;
     }
 
-    public void setXpReward(int xpReward) {
-        this.xpReward = xpReward;
+    public void setXp_reward(int xp_reward) {
+        this.xp_reward = xp_reward;
     }
 
-    public int getOrderIndex() {
-        return orderIndex;
+    public int getOrder_index() {
+        return order_index;
     }
 
-    public void setOrderIndex(int orderIndex) {
-        this.orderIndex = orderIndex;
+    public void setOrder_index(int order_index) {
+        this.order_index = order_index;
     }
 
-    public List<activityEntity> getActivities() {
+    public List<ActivityEntity> getActivities() {
         return activities;
     }
 
-    public void setActivities(List<activityEntity> activities) {
+    public void setActivities(List<ActivityEntity> activities) {
         this.activities = activities;
     }
 
-    public moduleEntity getModule() {
+    public ModuleEntity getModule() {
         return module;
     }
 
-    public void setModule(moduleEntity module) {
+    public void setModule(ModuleEntity module) {
         this.module = module;
     }
 
+    
 }
