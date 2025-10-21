@@ -49,8 +49,8 @@ public class instructorController {
 
     //U
     @PutMapping("/updateInstructor")
-    public InstructorEntity updateInstructor(@RequestParam int adminid, @RequestBody InstructorEntity updatedAdminDetails) {
-        return instructorService.updateInstructor(adminid, updatedAdminDetails);
+    public InstructorEntity updateInstructor(@RequestParam int instructor_id, @RequestBody InstructorEntity updatedInstructorData) {
+        return instructorService.updateInstructor(instructor_id, updatedInstructorData);
     }
 
     //D

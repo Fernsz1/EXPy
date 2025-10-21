@@ -18,10 +18,10 @@ import com.appdev1.expy.entity.LeaderboardEntity;
 import com.appdev1.expy.service.leaderboardService;
 
 @RestController
-@RequestMapping("api/leaderboard")
+@RequestMapping("/api/leaderboards")
 public class leaderboardController {
     @Autowired
-    leaderboardService leaderboardService;
+    private leaderboardService leaderboardService;
 
     public leaderboardController(leaderboardService leaderboardService) {
         this.leaderboardService = leaderboardService;

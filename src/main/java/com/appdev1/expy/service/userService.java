@@ -62,15 +62,15 @@ public class userService {
         UserEntity user = userOpt.get();
         if (user instanceof StudentEntity) {
             studentRepository.deleteById(id);
-            return "Student user deleted";
+            return "Student user with id " + id + " deleted";
         } else if (user instanceof InstructorEntity) {
             instructorRepository.deleteById(id);
-            return "Instructor user deleted";
+            return "Instructor user with id " + id + " deleted";
         } else {
             userRepository.deleteById(id);
             return "User deleted";
         }
-}
+    }
 
 }
     

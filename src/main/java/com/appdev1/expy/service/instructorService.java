@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.appdev1.expy.entity.InstructorEntity;
 import com.appdev1.expy.entity.StudentEntity;
+import com.appdev1.expy.entity.UserEntity;
 import com.appdev1.expy.repository.instructorRepository;
+import com.appdev1.expy.repository.userRepository;
 
 
 @Service
@@ -18,8 +20,18 @@ public class instructorService {
     @Autowired
     instructorRepository instructorRepository;
 
-    public instructorService(instructorRepository instructorRepository) {
+    @Autowired
+    private userRepository userRepository;
+
+    @Autowired
+    private userService userService;
+
+    public instructorService(instructorRepository instructorRepository, 
+                          userRepository userRepository,
+                          userService userService) {
         this.instructorRepository = instructorRepository;
+        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     //C
@@ -37,11 +49,16 @@ public class instructorService {
     }
 
     //U
-    public InstructorEntity updateInstructor(int instructor_id, InstructorEntity updatedDetails) {
+    public InstructorEntity updateInstructor(int instructor_id, InstructorEntity updatedInstructor) {
         InstructorEntity instructor = instructorRepository.findById(instructor_id)
                 .orElseThrow(() -> new NoSuchElementException("Instructor not found with id: " + instructor_id));
 
-        instructor.setBio(updatedDetails.getBio());
+        instructor.setUsername(updatedInstructor.getUsername());
+        instructor.setEmail(updatedInstructor.getEmail());
+        instructor.setPassword_hash(updatedInstructor.getPassword_hash());
+        instructor.setRole(updatedInstructor.getRole());
+        instructor.setStatus(updatedInstructor.getStatus());
+        instructor.setBio(updatedInstructor.getBio());
         // instructor.setCohorts(updatedDetails.getCohorts());
         // instructor.setReports(updatedDetails.getReports());
         // instructor.setActivities(updatedDetails.getActivities());
@@ -52,13 +69,16 @@ public class instructorService {
 
     //D
     public String deleteInstructor(int id) {
-        Optional<InstructorEntity> instructorOpt = instructorRepository.findById(id);
-        if (instructorOpt.isPresent()) {
-            instructorRepository.deleteById(id);
-            return "Instructor with id " + id + " deleted successfully";
-        } else {
+        Optional<UserEntity> userOpt = userRepository.findById(id);
+        if (!userOpt.isPresent()) {
             return "Instructor with id " + id + " not found";
         }
+        UserEntity user = userOpt.get();
+        if (!(user instanceof InstructorEntity)) {
+            return "Instructor with id " + id + " not found";
+        }
+
+        return userService.deleteUser(id);
     }
 
 }

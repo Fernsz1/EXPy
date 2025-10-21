@@ -45,8 +45,8 @@ public class reportController {
 
     // UPDATE
     @PutMapping("/update/{id}")
-    public ReportEntity updateReport(@PathVariable int id, @RequestBody ReportEntity updatedReport) {
-        return reportService.updateReport(id, updatedReport);
+    public ReportEntity updateReport(@PathVariable int report_id, @RequestBody ReportEntity updatedReport) {
+        return reportService.updateReport(report_id, updatedReport);
     }
 
     // DELETE

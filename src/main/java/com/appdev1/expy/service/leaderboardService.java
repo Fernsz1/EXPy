@@ -1,5 +1,6 @@
 package com.appdev1.expy.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -7,13 +8,21 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.appdev1.expy.controller.StudentController;
 import com.appdev1.expy.entity.LeaderboardEntity;
+import com.appdev1.expy.entity.StudentEntity;
+import com.appdev1.expy.entity.UserEntity;
+import com.appdev1.expy.repository.StudentRepository;
 import com.appdev1.expy.repository.leaderboardRepository;
+import com.appdev1.expy.repository.userRepository;
 
 @Service
 public class leaderboardService {
     @Autowired
-    leaderboardRepository leaderboardRep;
+    private leaderboardRepository leaderboardRep;
+
+    @Autowired
+    private StudentRepository studentRepository;
 
     public leaderboardService() {
         super();
@@ -21,6 +30,13 @@ public class leaderboardService {
 
     //C
     public LeaderboardEntity createLeaderboard(LeaderboardEntity leaderboard) {
+        List<StudentEntity> managedStudents = new ArrayList<>();
+        for (StudentEntity user : leaderboard.getStudents()) {
+            StudentEntity managedUser = studentRepository.findById(user.getUser_id())
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+            managedStudents.add(managedUser);
+        }
+        leaderboard.setStudents(managedStudents);
         return leaderboardRep.save(leaderboard);
     }
 

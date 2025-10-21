@@ -46,8 +46,8 @@ public class StudentController {
     }
 
     @PutMapping("/updateStudent")
-    public StudentEntity updateStudent(@RequestParam int studentId, @RequestBody StudentEntity updatedStudentDetails) {
-        return studentService.updateStudent(studentId, updatedStudentDetails);
+    public StudentEntity updateStudent(@RequestParam int student_id, @RequestBody StudentEntity updatedStudentDetails) {
+        return studentService.updateStudent(student_id, updatedStudentDetails);
     }
 
     @DeleteMapping("/deleteStudent/{id}")

@@ -20,7 +20,7 @@ import com.appdev1.expy.service.courseService;
 
 
 @RestController
-@RequestMapping(method = RequestMethod.GET, path = "/api/courses")
+@RequestMapping("/api/courses")
 public class courseController {
 
     @Autowired

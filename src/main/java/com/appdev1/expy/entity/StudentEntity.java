@@ -4,6 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -22,7 +25,7 @@ public class StudentEntity extends UserEntity {
     @OneToMany(mappedBy = "student")
     private List<ReportEntity> reports;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinTable(
         name = "student_activity",
         joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "user_id"),
@@ -33,10 +36,15 @@ public class StudentEntity extends UserEntity {
     @ManyToMany(mappedBy = "students")
     private Set<CohortEntity> cohorts = new HashSet<>();
 
-    @ManyToMany(mappedBy = "students")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinTable(
+        name = "student_leaderboard",
+        joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "leaderboard_id")
+    )
     private Set<LeaderboardEntity> leaderboards = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinTable(
         name = "student_badge",
         joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "user_id"),

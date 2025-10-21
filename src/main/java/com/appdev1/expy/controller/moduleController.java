@@ -49,8 +49,8 @@ public class moduleController {
 
     // U
     @PutMapping("/updateModule")
-    public ModuleEntity updateModule(@RequestParam int moduleId, @RequestBody ModuleEntity updatedModuleDetails) {
-        return moduleService.updateModule(moduleId, updatedModuleDetails);
+    public ModuleEntity updateModule(@RequestParam int module_id, @RequestBody ModuleEntity updatedModuleDetails) {
+        return moduleService.updateModule(module_id, updatedModuleDetails);
     }
 
     // D

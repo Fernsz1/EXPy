@@ -8,15 +8,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.appdev1.expy.entity.StudentEntity;
+import com.appdev1.expy.entity.UserEntity;
 import com.appdev1.expy.repository.StudentRepository;
+import com.appdev1.expy.repository.userRepository;
 
 @Service
 public class StudentService {
     @Autowired
-    private final StudentRepository studentRepository;
+    private StudentRepository studentRepository;
 
-    public StudentService(StudentRepository studentRepository) {
+    @Autowired
+    private userRepository userRepository;
+
+    @Autowired
+    private userService userService;
+
+    public StudentService(StudentRepository studentRepository,
+                          userRepository userRepository,
+                          userService userService) {
         this.studentRepository = studentRepository;
+        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     // C
@@ -38,6 +50,11 @@ public class StudentService {
         StudentEntity student = studentRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Student with ID " + id + " not found"));
 
+        student.setUsername(updatedStudent.getUsername());
+        student.setEmail(updatedStudent.getEmail());
+        student.setPassword_hash(updatedStudent.getPassword_hash());
+        student.setRole(updatedStudent.getRole());
+        student.setStatus(updatedStudent.getStatus());
         student.setTotal_exp(updatedStudent.getTotal_exp());
         student.setLevel(updatedStudent.getLevel());
         student.setCurrent_streak(updatedStudent.getCurrent_streak());
@@ -52,13 +69,16 @@ public class StudentService {
 
     // D
     public String deleteStudent(int id) {
-        Optional<StudentEntity> studentOpt = studentRepository.findById(id);
-        if (studentOpt.isPresent()) {
-            studentRepository.deleteById(id);
-            return "Student with id " + id + " deleted successfully";
-        } else {
+        Optional<UserEntity> userOpt = userRepository.findById(id);
+        if (!userOpt.isPresent()) {
             return "Student with id " + id + " not found";
         }
+        UserEntity user = userOpt.get();
+        if (!(user instanceof StudentEntity)) {
+            return "Student with id " + id + " not found";
+        }
+
+        return userService.deleteUser(id);
     }
 
     
