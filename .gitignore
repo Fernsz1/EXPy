@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+#para di na sig change2 pass
+src/main/resources/application.properties
+
