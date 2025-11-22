@@ -1,0 +1,145 @@
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body, html {
+   
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    z-index: 1;
+  }
+
+  
+
+  /* Container */
+  .login-container {
+    text-align: center;
+    color: white;
+     position: relative;
+    height: 100vh;
+    background: url('/images/login.PNG') no-repeat center center/cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+  }
+
+  /* Logo */
+ .logo-wrapper {
+    position: absolute;
+    top: 0px;
+    bottom: 582px;
+    left: 40px;
+    z-index: 10;
+    margin-bottom: 0; /* Remove margin if present */
+}
+
+  .logo-bg {
+    width: 180px; /* adjust size */
+     z-index: 1;
+  }
+
+  .logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px; /* adjust size */
+     z-index: 1;
+  }
+
+  /* Heading */
+  .login-container h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 48px;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 5px #000;
+    animation: wave-smooth 3s ease-in-out infinite;
+     z-index: 1;
+  }
+
+  @keyframes wave-smooth {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+
+  /* Inputs */
+  .login-input {
+    display: block;
+    width: 300px;
+    padding: 12px 15px;
+    margin: 15px auto;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+     z-index: 1;
+  }
+
+  .login-input::placeholder {
+    color: #999;
+     z-index: 1;
+  }
+
+  /* Sign In Button */
+  .btn-login {
+    width: 300px;
+    padding: 12px 0;
+    margin: 20px auto;
+    border-radius: 8px;
+    border: none;
+    background-color: #FFD700;
+    font-family: 'Gamja Flower', cursive;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 2px solid black;   /* thin black border */
+     z-index: 1;
+  }
+
+  .btn-login:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #FFD700;
+  }
+
+  /* Forgot password */
+  .forgot {
+    font-size: 12px;
+    display: block;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    margin-left: 200px;
+    text-decoration: underline;
+    cursor: pointer;
+    font-family: 'Times New Roman', Times, serif;
+     z-index: 1;
+  }
+
+  /* Sign Up link */
+  .signup-text {
+    font-size: 14px;
+    color: white;
+     font-family: 'Times New Roman', Times, serif;
+      z-index: 1;
+  }
+
+  .signup-text a {
+    color: #FFD700;
+    font-family: 'Gamja Flower', cursive;
+    text-decoration: none;
+    margin-left: 5px;
+     z-index: 1;
+  }
+
+  .signup-text a:hover {
+    text-decoration: underline;
+    
+  }
+
+  #particles-js {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1; /* ABOVE background */
+}
