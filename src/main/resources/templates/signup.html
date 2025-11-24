@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login - EXPy</title>
+    <title>Sign Up - EXPy</title>
     <link rel="stylesheet" href="/css/login.css">
     
 <!-- Fonts -->
@@ -20,19 +20,20 @@
   </div>
 
   <!-- Heading -->
-  <h1>Glad you’ve returned!</h1>
+  <h1>Begin Your Quest</h1>
 
   <!-- Inputs -->
-  <input type="text" placeholder="username / email" class="login-input">
-  <input type="password" placeholder="password" class="login-input">
-  <span class="forgot">forgot password?</span>
+  <input type="text" placeholder="username" class="login-input" id="username">
+  <input type="email" placeholder="email" class="login-input" id="email">
+  <input type="password" placeholder="password" class="login-input" id="password">
+  <input type="password" placeholder="confirm password" class="login-input" id="confirm-password">
 
-  <!-- Sign In -->
-  <button class="btn-login">Sign In</button>
+  <!-- Sign Up Button -->
+  <button class="btn-login">Sign Up</button>
 
-  <!-- Sign Up -->
+  <!-- Sign In link -->
   <p class="signup-text">
-    Don't have an account? <a href="/signup">Sign Up</a>
+    Already have an account? <a href="/login">Sign In</a>
   </p>
 </div>
 
@@ -94,3 +95,4 @@
 
 </body>
 </html>
+
