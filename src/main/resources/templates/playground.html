@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playground - EXPy</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Gamja+Flower&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/playground.css">
+</head>
+<body>
+    <!-- Header/Navbar -->
+    <header class="navbar">
+        <div class="left">
+            <div class="logo">
+                <img src="/images/logo.png" alt="EXPy Logo">
+            </div>
+            <nav>
+                <a href="/home" class="nav-link">Dashboard</a>
+                <a href="/lessons" class="nav-link">Lessons</a>
+                <a href="/challenges" class="nav-link">Challenges</a>
+                <a href="/playground" class="nav-link active">Playground</a>
+            </nav>
+        </div>
+        <div class="user-section">
+            <span class="user-name">[User]</span>
+            <img src="/images/logo.png" alt="User Avatar" class="user-avatar">
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <section class="playground-header">
+            <h1 class="page-title">Python Playground</h1>
+            <p class="page-subtitle">Write and run Python code in your browser. Experiment freely and see results instantly!</p>
+        </section>
+
+        <section class="playground-container">
+            <div class="editor-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Code Editor</span>
+                    <div class="panel-actions">
+                        <button class="btn-clear" onclick="clearCode()">Clear</button>
+                        <button class="btn-run" onclick="runCode()">▶ Run</button>
+                    </div>
+                </div>
+                <div class="editor-wrapper">
+                    <div class="editor-container">
+                        <div class="line-numbers" id="line-numbers"></div>
+                        <textarea 
+                            id="code-editor" 
+                            class="code-editor" 
+                            placeholder="# Write your Python code here&#10;# Example:&#10;print('Hello, World!')&#10;for i in range(5):&#10;    print(f'Number: {i}')"
+                            spellcheck="false"># Welcome to Python Playground!
+print('Hello, World!')
+
+# Try writing your Python code here
+name = input('Enter your name: ')
+print(f'Hello, {name}!')</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="output-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Output</span>
+                    <button class="btn-clear" onclick="clearOutput()">Clear Output</button>
+                </div>
+                <div class="output-wrapper">
+                    <div id="output" class="output-content">
+                        <div class="output-placeholder">
+                            <p>Output will appear here after you run your code.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Pyodide for running Python in browser -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <script>
+        let pyodide;
+        let isPyodideLoaded = false;
+
+        // Initialize Pyodide
+        async function initPyodide() {
+            if (!isPyodideLoaded) {
+                try {
+                    document.getElementById('output').innerHTML = '<div class="loading">Loading Python runtime... Please wait.</div>';
+                    pyodide = await loadPyodide({
+                        indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/"
+                    });
+                    isPyodideLoaded = true;
+                    document.getElementById('output').innerHTML = '<div class="success-message">✓ Python runtime ready! You can now run your code.</div>';
+                } catch (error) {
+                    document.getElementById('output').innerHTML = `<div class="error-message">Error loading Python runtime: ${error.message}</div>`;
+                }
+            }
+        }
+
+        // Run Python code
+        async function runCode() {
+            if (!isPyodideLoaded) {
+                await initPyodide();
+            }
+
+            const code = document.getElementById('code-editor').value;
+            const outputDiv = document.getElementById('output');
+            
+            if (!code.trim()) {
+                outputDiv.innerHTML = '<div class="warning-message">Please enter some Python code to run.</div>';
+                return;
+            }
+
+            try {
+                // Clear previous output
+                outputDiv.innerHTML = '';
+                outputDiv.classList.add('running');
+
+                // Capture print statements
+                let output = '';
+                pyodide.runPython(`
+import sys
+from io import StringIO
+sys.stdout = StringIO()
+`);
+
+                // Run user code
+                pyodide.runPython(code);
+
+                // Get output
+                const stdout = pyodide.runPython('sys.stdout.getvalue()');
+                if (stdout) {
+                    output = stdout;
+                }
+
+                // Handle input() calls - for now, show a placeholder
+                // In a real implementation, you'd want to handle this differently
+                pyodide.runPython(`
+sys.stdout = sys.__stdout__
+`);
+
+                if (output) {
+                    outputDiv.innerHTML = `<pre class="output-text">${escapeHtml(output)}</pre>`;
+                } else {
+                    outputDiv.innerHTML = '<div class="success-message">✓ Code executed successfully! (No output)</div>';
+                }
+            } catch (error) {
+                outputDiv.innerHTML = `<div class="error-message">Error: <pre>${escapeHtml(error.message)}</pre></div>`;
+            } finally {
+                outputDiv.classList.remove('running');
+            }
+        }
+
+        // Clear code editor
+        function clearCode() {
+            if (confirm('Are you sure you want to clear the code editor?')) {
+                document.getElementById('code-editor').value = '';
+                updateLineNumbers();
+            }
+        }
+
+        // Clear output
+        function clearOutput() {
+            document.getElementById('output').innerHTML = '<div class="output-placeholder"><p>Output will appear here after you run your code.</p></div>';
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Initialize Pyodide when page loads
+        window.addEventListener('load', () => {
+            initPyodide();
+        });
+
+        // Update line numbers dynamically
+        function updateLineNumbers() {
+            const editor = document.getElementById('code-editor');
+            const lineNumbers = document.getElementById('line-numbers');
+            const lines = editor.value.split('\n').length;
+            
+            let lineNumbersHTML = '';
+            for (let i = 1; i <= Math.max(lines, 20); i++) {
+                lineNumbersHTML += `<div class="line-number">${i}</div>`;
+            }
+            lineNumbers.innerHTML = lineNumbersHTML;
+            
+            // Sync scroll
+            lineNumbers.scrollTop = editor.scrollTop;
+        }
+
+        // Initialize line numbers and sync scrolling
+        const codeEditor = document.getElementById('code-editor');
+        
+        codeEditor.addEventListener('input', updateLineNumbers);
+        codeEditor.addEventListener('scroll', function() {
+            document.getElementById('line-numbers').scrollTop = this.scrollTop;
+        });
+
+        // Initial line numbers
+        updateLineNumbers();
+
+        // Tab support for code editor
+        codeEditor.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = this.selectionStart;
+                const end = this.selectionEnd;
+                this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
+                this.selectionStart = this.selectionEnd = start + 4;
+                updateLineNumbers();
+            }
+        });
+    </script>
+</body>
+</html>
+

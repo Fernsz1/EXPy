@@ -26,4 +26,24 @@ public class PageController {
     public String signup() {
         return "signup";
     }
+
+    @GetMapping("/home")
+    public String dashboard() {
+        return "home";
+    }
+
+    @GetMapping("/lessons")
+    public String lessons() {
+        return "lessons";
+    }
+
+    @GetMapping("/challenges")
+    public String challenges() {
+        return "challenges";
+    }
+
+    @GetMapping("/playground")
+    public String playground() {
+        return "playground";
+    }
 }
