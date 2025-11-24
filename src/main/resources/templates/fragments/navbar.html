@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- Navbar Fragment -->
+    <header class="navbar" th:fragment="navbar(activePage)">
+        <div class="left">
+            <div class="logo">
+                <img th:src="@{/images/logo.png}" alt="EXPy Logo" loading="eager" fetchpriority="high">
+            </div>
+            <nav>
+                <a class="nav-link" 
+                   th:classappend="${activePage == 'home'} ? 'active' : ''"
+                   th:href="@{/home}">Dashboard</a>
+                <a class="nav-link" 
+                   th:classappend="${activePage == 'lessons'} ? 'active' : ''"
+                   th:href="@{/lessons}">Lessons</a>
+                <a class="nav-link" 
+                   th:classappend="${activePage == 'challenges'} ? 'active' : ''"
+                   th:href="@{/challenges}">Challenges</a>
+                <a class="nav-link" 
+                   th:classappend="${activePage == 'playground'} ? 'active' : ''"
+                   th:href="@{/playground}">Playground</a>
+            </nav>
+        </div>
+        <div class="user-section">
+            <span class="user-name">[User]</span>
+            <img th:src="@{/images/logo.png}" alt="User Avatar" class="user-avatar" loading="eager" fetchpriority="high">
+        </div>
+    </header>
+</body>
+</html>
+

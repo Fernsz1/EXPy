@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${subLessonTitle != null ? subLessonTitle + ' - EXPy' : 'Sub-lesson - EXPy'}">Sub-lesson - EXPy</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Gamja+Flower&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/sublesson.css">
+</head>
+<body>
+<main class="main-content">
+
+    <!-- Back Button -->
+    <a th:href="@{/lesson/{id}(id=${lessonId})}" class="back-button">← Back to Lesson</a>
+
+    <!-- Header & Progress -->
+    <section class="sublesson-header">
+        <div class="sublesson-meta">
+            <span class="lesson-label" th:text="${lessonTitle != null ? lessonTitle : 'Python Foundations'}">Python Foundations</span>
+            <h1 class="sublesson-title" th:text="${subLessonTitle != null ? subLessonTitle : 'Lesson 1: Introduction to Python'}">Lesson 1: Introduction to Python</h1>
+            <p class="sublesson-description"
+               th:text="${subLessonDescription != null ? subLessonDescription : 'Understand the basics of Python syntax, keywords, and how to run your first script.'}">
+                Understand the basics of Python syntax, keywords, and how to run your first script.
+            </p>
+        </div>
+
+        <div class="progress-wrapper">
+            <div class="progress-header">
+                <span>Progress</span>
+                <span class="progress-percent" th:text="${progressPercent != null ? progressPercent + '%' : '20%'}">20%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-bar"
+                     th:style="${progressPercent != null ? 'width:' + progressPercent + '%' : 'width:20%'}"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sequential Topics -->
+    <section class="topics-section">
+        <div class="topics-header">
+            <h2>Topics</h2>
+
+            <div class="topic-navigation">
+                <button class="nav-button" id="prev-topic-btn">← Previous</button>
+                <button class="nav-button primary" id="next-topic-btn">Next →</button>
+            </div>
+        </div>
+
+        <div class="topics-timeline">
+            <article class="topic-card active" data-topic-index="1">
+                <div class="topic-number">Topic 1</div>
+                <h3>Python REPL & Script Mode</h3>
+                <p>Learn how to experiment quickly in the Python REPL before converting your snippets into scripts.</p>
+            </article>
+
+            <article class="topic-card upcoming" data-topic-index="2">
+                <div class="topic-number">Topic 2</div>
+                <h3>Printing & Comments</h3>
+                <p>Understand how to communicate with your program through prints and document your thoughts with comments.</p>
+            </article>
+
+            <article class="topic-card upcoming" data-topic-index="3">
+                <div class="topic-number">Topic 3</div>
+                <h3>Basic Input</h3>
+                <p>Accept user input, perform simple processing, and echo results back.</p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Lesson Walkthrough -->
+    <section class="lesson-content">
+        <h2>Lesson Walkthrough</h2>
+
+        <article class="lesson-step">
+            <div class="step-number">Step 1</div>
+            <h3>Hello World & Print</h3>
+            <p>
+                Every Python journey starts with <code>print()</code>. Use it to display text or the value of a variable.
+            </p>
+<pre><code>print("Hello, World!")
+greeting = "Hello, EXPy!"
+print(greeting)</code></pre>
+        </article>
+
+        <article class="lesson-step">
+            <div class="step-number">Step 2</div>
+            <h3>Variables & Data Types</h3>
+            <p>
+                Store information by assigning names. Python infers the data type automatically, so you can swap values freely.
+            </p>
+<pre><code>username = "Nova"
+age = 16
+pi = 3.1416
+is_wizard = True</code></pre>
+        </article>
+
+        <article class="lesson-step">
+            <div class="step-number">Step 3</div>
+            <h3>User Input</h3>
+            <p>
+                Use <code>input()</code> to interact with the player. Convert the result when you need numeric values.
+            </p>
+<pre><code>spell = input("Name your spell: ")
+power = int(input("Power level (0-10): "))
+print(f"{spell} has power {power}!")</code></pre>
+        </article>
+    </section>
+
+    <!-- Question -->
+    <section class="question-section">
+        <div class="question-header">
+            <h2>Checkpoint: Fill in the Code</h2>
+            <span class="question-type">Interactive</span>
+        </div>
+
+        <div class="question-body">
+            <p class="question-text">
+                Complete the code so it prints: <strong>Hello, EXPy!</strong>
+            </p>
+
+            <div class="code-block">
+<pre><code>name = "EXPy"
+# fill the missing line below
+print(____)</code></pre>
+            </div>
+
+            <textarea class="answer-input" placeholder="Type your answer here... Example: print('Hello, ' + name + '!')"></textarea>
+
+            <div class="question-actions">
+                <button class="btn-secondary" onclick="checkAnswer()">Check Answer</button>
+            </div>
+
+            <p class="note-text">
+                Placeholder: backend will evaluate the answer and give feedback.
+            </p>
+        </div>
+    </section>
+
+    <!-- Completion -->
+    <section class="completion-card">
+        <h2>You're almost there!</h2>
+        <p>Complete all topics and questions to unlock the next sub-lesson and earn +75 EXP.</p>
+        <button class="btn-complete" onclick="completeSubLesson()">Mark as Complete</button>
+    </section>
+
+</main>
+
+<script>
+    const lessonId = /*[[${lessonId}]]*/ 1;
+    const subLessonId = /*[[${subLessonId}]]*/ 1;
+    let currentTopic = /*[[${currentTopic}]]*/ 1 || 1;
+
+    const topicCards = Array.from(document.querySelectorAll('.topic-card'));
+    const prevBtn = document.getElementById('prev-topic-btn');
+    const nextBtn = document.getElementById('next-topic-btn');
+
+    function updateTopicUI() {
+        topicCards.forEach(card => {
+            const index = Number(card.dataset.topicIndex);
+            card.classList.remove('active', 'completed', 'upcoming');
+
+            if (index === currentTopic) card.classList.add('active');
+            else if (index < currentTopic) card.classList.add('completed');
+            else card.classList.add('upcoming');
+        });
+
+        prevBtn.disabled = currentTopic <= 1;
+        nextBtn.disabled = currentTopic >= topicCards.length;
+    }
+
+    prevBtn.addEventListener('click', () => {
+        if (currentTopic > 1) {
+            currentTopic -= 1;
+            updateTopicUI();
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentTopic < topicCards.length) {
+            currentTopic += 1;
+            updateTopicUI();
+        }
+    });
+
+    function checkAnswer() {
+        alert('Checking answer... (backend integration needed)');
+    }
+
+    function completeSubLesson() {
+        alert('Great job! Completion flow will be handled by backend.');
+    }
+
+    updateTopicUI();
+</script>
+
+</body>
+</html>

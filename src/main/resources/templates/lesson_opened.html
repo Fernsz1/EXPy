@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${lessonTitle != null ? lessonTitle + ' - EXPy' : 'Lesson - EXPy'}">Lesson - EXPy</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Gamja+Flower&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/lesson_opened.css">
+</head>
+<body>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Back Button -->
+        <a th:href="@{/lessons}" class="back-button">
+            ← Back to Lessons
+        </a>
+
+        <!-- Lesson Header -->
+        <section class="lesson-header">
+            <div class="lesson-header-content">
+                <span class="lesson-level-badge" th:text="${lessonLevel != null ? lessonLevel : 'Beginner'}">Beginner</span>
+                <h1 class="lesson-title" th:text="${lessonTitle != null ? lessonTitle : 'Python Foundations'}">Python Foundations</h1>
+                <p class="lesson-subheader" th:text="${lessonSubheader != null ? lessonSubheader : 'Introduction to Python'}">Introduction to Python</p>
+                <p class="lesson-description" th:text="${lessonDescription != null ? lessonDescription : 'Learn the fundamentals of Python programming, from syntax to your first program.'}">
+                    Learn the fundamentals of Python programming, from syntax to your first program.
+                </p>
+            </div>
+        </section>
+
+        <!-- Sub-lessons Section -->
+        <section class="sub-lessons-section">
+            <h2 class="section-title">Sub-Lessons</h2>
+            
+            <div class="sub-lessons-list">
+                <!-- Example: Sub-lesson 1 - Available -->
+                <article class="sub-lesson-card"
+                         th:each="subLesson, iterStat : ${subLessons != null ? subLessons : {}}"
+                         th:classappend="${subLesson.status != null ? ' ' + subLesson.status : ' available'}">
+                    <div class="sub-lesson-number" th:text="${'Lesson ' + subLesson.number}">Lesson 1</div>
+                    <div class="sub-lesson-content">
+                        <div class="sub-lesson-info">
+                            <h3 class="sub-lesson-title" th:text="${subLesson.title != null ? subLesson.title : 'Introduction to Python'}">Introduction to Python</h3>
+                            <p class="sub-lesson-description" th:text="${subLesson.description != null ? subLesson.description : 'Get started with Python basics and syntax.'}">
+                                Get started with Python basics and syntax.
+                            </p>
+                        </div>
+                        <div class="sub-lesson-actions">
+                            <div class="exp-badge" th:if="${subLesson.expPoints != null}">
+                                <span class="exp-value" th:text="${'+' + subLesson.expPoints + ' EXP'}">+50 EXP</span>
+                            </div>
+                            <button class="btn-play"
+                                    th:classappend="${subLesson.status == 'locked'} ? ' locked' : ''"
+                                    th:onclick="|startLesson(${subLesson.id})|"
+                                    th:disabled="${subLesson.isLocked}">
+                                <span class="play-icon">▶</span> Play
+                            </button>
+                        </div>
+                    </div>
+                    <div class="sub-lesson-status" th:classappend="${subLesson.status != null ? ' ' + subLesson.status : ' available'}">
+                        <span th:if="${subLesson.status == 'completed'}">✓ Completed</span>
+                        <span th:if="${subLesson.status == 'in-progress'}">⏳ In Progress</span>
+                        <span th:if="${subLesson.status == 'locked'}">🔒 Locked</span>
+                        <span th:if="${subLesson.status == null or subLesson.status == 'available'}">○ Available</span>
+                    </div>
+                    <div class="lock-message" th:if="${subLesson.status == 'locked'}">
+                        <p>Complete previous lesson to unlock</p>
+                    </div>
+                </article>
+
+                <!-- Placeholder sub-lessons for demonstration (will be replaced by backend data) -->
+                <article class="sub-lesson-card available">
+                    <div class="sub-lesson-number">Lesson 1</div>
+                    <div class="sub-lesson-content">
+                        <div class="sub-lesson-info">
+                            <h3 class="sub-lesson-title">Introduction to Python</h3>
+                            <p class="sub-lesson-description">Get started with Python basics and syntax.</p>
+                        </div>
+                        <div class="sub-lesson-actions">
+                            <div class="exp-badge">
+                                <span class="exp-value">+50 EXP</span>
+                            </div>
+                            <button class="btn-play" onclick="startLesson(1)">
+                                <span class="play-icon">▶</span> Play
+                            </button>
+                        </div>
+                    </div>
+                    <div class="sub-lesson-status available">
+                        <span>○ Available</span>
+                    </div>
+                </article>
+
+                <article class="sub-lesson-card locked">
+                    <div class="sub-lesson-number">Lesson 2</div>
+                    <div class="sub-lesson-content">
+                        <div class="sub-lesson-info">
+                            <h3 class="sub-lesson-title">Variables and Data Types</h3>
+                            <p class="sub-lesson-description">Learn about variables, strings, numbers, and data types.</p>
+                        </div>
+                        <div class="sub-lesson-actions">
+                            <div class="exp-badge">
+                                <span class="exp-value">+75 EXP</span>
+                            </div>
+                            <button class="btn-play locked" disabled>
+                                <span class="lock-icon">🔒</span> Locked
+                            </button>
+                        </div>
+                    </div>
+                    <div class="sub-lesson-status locked">
+                        <span>🔒 Locked</span>
+                    </div>
+                    <div class="lock-message">
+                        <p>Complete previous lesson to unlock</p>
+                    </div>
+                </article>
+
+                <article class="sub-lesson-card locked">
+                    <div class="sub-lesson-number">Lesson 3</div>
+                    <div class="sub-lesson-content">
+                        <div class="sub-lesson-info">
+                            <h3 class="sub-lesson-title">Control Flow</h3>
+                            <p class="sub-lesson-description">Master if/else statements and loops.</p>
+                        </div>
+                        <div class="sub-lesson-actions">
+                            <div class="exp-badge">
+                                <span class="exp-value">+100 EXP</span>
+                            </div>
+                            <button class="btn-play locked" disabled>
+                                <span class="lock-icon">🔒</span> Locked
+                            </button>
+                        </div>
+                    </div>
+                    <div class="sub-lesson-status locked">
+                        <span>🔒 Locked</span>
+                    </div>
+                    <div class="lock-message">
+                        <p>Complete previous lesson to unlock</p>
+                    </div>
+                </article>
+
+                <article class="sub-lesson-card locked">
+                    <div class="sub-lesson-number">Lesson 4</div>
+                    <div class="sub-lesson-content">
+                        <div class="sub-lesson-info">
+                            <h3 class="sub-lesson-title">Functions</h3>
+                            <p class="sub-lesson-description">Learn to create and use functions.</p>
+                        </div>
+                        <div class="sub-lesson-actions">
+                            <div class="exp-badge">
+                                <span class="exp-value">+125 EXP</span>
+                            </div>
+                            <button class="btn-play locked" disabled>
+                                <span class="lock-icon">🔒</span> Locked
+                            </button>
+                        </div>
+                    </div>
+                    <div class="sub-lesson-status locked">
+                        <span>🔒 Locked</span>
+                    </div>
+                    <div class="lock-message">
+                        <p>Complete previous lesson to unlock</p>
+                    </div>
+                </article>
+
+                <article class="sub-lesson-card locked">
+                    <div class="sub-lesson-number">Lesson 5</div>
+                    <div class="sub-lesson-content">
+                        <div class="sub-lesson-info">
+                            <h3 class="sub-lesson-title">Data Structures</h3>
+                            <p class="sub-lesson-description">Explore lists, dictionaries, and more.</p>
+                        </div>
+                        <div class="sub-lesson-actions">
+                            <div class="exp-badge">
+                                <span class="exp-value">+150 EXP</span>
+                            </div>
+                            <button class="btn-play locked" disabled>
+                                <span class="lock-icon">🔒</span> Locked
+                            </button>
+                        </div>
+                    </div>
+                    <div class="sub-lesson-status locked">
+                        <span>🔒 Locked</span>
+                    </div>
+                    <div class="lock-message">
+                        <p>Complete previous lesson to unlock</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <script th:inline="javascript">
+        const lessonId = /*[[${lessonId}]]*/ 1;
+
+        function startLesson(subLessonId) {
+            if (!subLessonId) {
+                return;
+            }
+            window.location.href = `/lesson/${lessonId}/sublesson/${subLessonId}`;
+        }
+    </script>
+</body>
+</html>
+

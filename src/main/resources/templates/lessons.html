@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,24 +11,8 @@
     <link rel="stylesheet" href="/css/lessons.css">
 </head>
 <body>
-    <!-- Header/Navbar -->
-    <header class="navbar">
-        <div class="left">
-            <div class="logo">
-                <img src="/images/logo.png" alt="EXPy Logo">
-            </div>
-            <nav>
-                <a href="/home" class="nav-link">Dashboard</a>
-                <a href="/lessons" class="nav-link active">Lessons</a>
-                <a href="/challenges" class="nav-link">Challenges</a>
-                <a href="/playground" class="nav-link">Playground</a>
-            </nav>
-        </div>
-        <div class="user-section">
-            <span class="user-name">[User]</span>
-            <img src="/images/logo.png" alt="User Avatar" class="user-avatar">
-        </div>
-    </header>
+    <!-- Header/Navbar Fragment -->
+    <div th:replace="~{fragments/navbar :: navbar(${activePage})}"></div>
 
     <!-- Main Content -->
     <main class="main-content">
@@ -44,7 +28,7 @@
 
         <section class="lessons-grid">
             <!-- Beginner Cards -->
-            <article class="lesson-card beginner">
+            <article class="lesson-card beginner" onclick="window.location.href='/lesson/1'" style="cursor: pointer;">
                 <div class="lesson-cover">
                     <img src="/images/logo.png" alt="Lesson cover">
                 </div>
@@ -55,7 +39,7 @@
                 </div>
             </article>
 
-            <article class="lesson-card beginner">
+            <article class="lesson-card beginner" onclick="window.location.href='/lesson/2'" style="cursor: pointer;">
                 <div class="lesson-cover">
                     <img src="/images/logo.png" alt="Lesson cover">
                 </div>
@@ -66,7 +50,7 @@
                 </div>
             </article>
 
-            <article class="lesson-card beginner">
+            <article class="lesson-card beginner" onclick="window.location.href='/lesson/3'" style="cursor: pointer;">
                 <div class="lesson-cover">
                     <img src="/images/logo.png" alt="Lesson cover">
                 </div>
@@ -78,7 +62,7 @@
             </article>
 
             <!-- Intermediate Cards -->
-            <article class="lesson-card intermediate">
+            <article class="lesson-card intermediate" onclick="window.location.href='/lesson/4'" style="cursor: pointer;">
                 <div class="lesson-cover">
                     <img src="/images/logo.png" alt="Lesson cover">
                 </div>
@@ -89,7 +73,7 @@
                 </div>
             </article>
 
-            <article class="lesson-card intermediate">
+            <article class="lesson-card intermediate" onclick="window.location.href='/lesson/5'" style="cursor: pointer;">
                 <div class="lesson-cover">
                     <img src="/images/logo.png" alt="Lesson cover">
                 </div>
@@ -100,7 +84,7 @@
                 </div>
             </article>
 
-            <article class="lesson-card intermediate">
+            <article class="lesson-card intermediate" onclick="window.location.href='/lesson/6'" style="cursor: pointer;">
                 <div class="lesson-cover">
                     <img src="/images/logo.png" alt="Lesson cover">
                 </div>
