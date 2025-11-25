@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - EXPy</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Gamja+Flower&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/account.css">
+</head>
+<body>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Back Button -->
+        <a th:href="@{/home}" class="back-button">← Back to Dashboard</a>
+
+        <!-- Account Header -->
+        <section class="account-header">
+            <h1 class="page-title">My Account</h1>
+            <p class="page-subtitle">Manage your personal information and account settings</p>
+        </section>
+
+        <!-- Personal Information Section -->
+        <section class="account-section">
+            <div class="section-header">
+                <h2>Personal Information</h2>
+                <p class="section-description">Update your profile information and contact details</p>
+            </div>
+
+            <form class="account-form" id="accountForm" th:action="@{/api/account/update}" method="POST">
+                <!-- Profile Picture -->
+                <div class="form-group profile-picture-group">
+                    <label class="form-label">Profile Picture</label>
+                    <div class="profile-picture-container">
+                        <div class="profile-picture-preview">
+                            <img id="profilePreview" 
+                                 th:src="${userProfilePicture != null ? userProfilePicture : '/images/logo.png'}" 
+                                 alt="Profile Picture"
+                                 onerror="this.src='/images/logo.png'">
+                            <div class="profile-picture-overlay">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="white" stroke-width="2"/>
+                                    <path d="M3 16L7 12L10 15L14 11L21 18V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V16Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span>Change Photo</span>
+                            </div>
+                        </div>
+                        <input type="file" 
+                               id="profilePictureInput" 
+                               name="profilePicture" 
+                               accept="image/*" 
+                               class="file-input"
+                               onchange="handleProfilePictureChange(event)">
+                        <p class="form-hint">JPG, PNG or GIF. Max size 2MB</p>
+                    </div>
+                </div>
+
+                <!-- First Name -->
+                <div class="form-group">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" 
+                           id="firstName" 
+                           name="firstName" 
+                           class="form-input"
+                           th:value="${userFirstName != null ? userFirstName : ''}"
+                           placeholder="Enter your first name"
+                           required>
+                </div>
+
+                <!-- Last Name -->
+                <div class="form-group">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" 
+                           id="lastName" 
+                           name="lastName" 
+                           class="form-input"
+                           th:value="${userLastName != null ? userLastName : ''}"
+                           placeholder="Enter your last name"
+                           required>
+                </div>
+
+                <!-- Email Address -->
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" 
+                           id="email" 
+                           name="email" 
+                           class="form-input"
+                           th:value="${userEmail != null ? userEmail : ''}"
+                           placeholder="Enter your email address"
+                           required>
+                    <p class="form-hint">This will be used for login and notifications</p>
+                </div>
+
+                <!-- Contact Number -->
+                <div class="form-group">
+                    <label for="contactNumber" class="form-label">Contact Number</label>
+                    <input type="tel" 
+                           id="contactNumber" 
+                           name="contactNumber" 
+                           class="form-input"
+                           th:value="${userContactNumber != null ? userContactNumber : ''}"
+                           placeholder="Enter your contact number"
+                           pattern="[0-9+\-\s()]+">
+                    <p class="form-hint">Include country code if applicable</p>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="resetForm()">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Success/Error Messages -->
+        <div id="messagePanel" class="message-panel" style="display: none;">
+            <div id="messageContent" class="message-content"></div>
+        </div>
+    </main>
+
+    <script>
+        // Handle profile picture change
+        function handleProfilePictureChange(event) {
+            const file = event.target.files[0];
+            if (file) {
+                // Validate file size (2MB max)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('File size must be less than 2MB');
+                    event.target.value = '';
+                    return;
+                }
+
+                // Validate file type
+                if (!file.type.match('image.*')) {
+                    alert('Please select an image file');
+                    event.target.value = '';
+                    return;
+                }
+
+                // Preview image
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profilePreview').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Reset form
+        function resetForm() {
+            if (confirm('Are you sure you want to discard your changes?')) {
+                document.getElementById('accountForm').reset();
+                // Reset profile picture preview
+                const originalSrc = /*[[${userProfilePicture != null ? userProfilePicture : '/images/logo.png'}]]*/ '/images/logo.png';
+                document.getElementById('profilePreview').src = originalSrc;
+                document.getElementById('profilePictureInput').value = '';
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('accountForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const messagePanel = document.getElementById('messagePanel');
+            const messageContent = document.getElementById('messageContent');
+
+            // Show loading state
+            messagePanel.style.display = 'block';
+            messageContent.innerHTML = '<div class="message-loading">Saving changes...</div>';
+            messageContent.className = 'message-content message-info';
+
+            // Simulate API call (replace with actual API endpoint)
+            // fetch('/api/account/update', {
+            //     method: 'POST',
+            //     body: formData
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     messageContent.className = 'message-content message-success';
+            //     messageContent.innerHTML = '<div class="message-text">✓ Changes saved successfully!</div>';
+            //     setTimeout(() => {
+            //         messagePanel.style.display = 'none';
+            //     }, 3000);
+            // })
+            // .catch(error => {
+            //     messageContent.className = 'message-content message-error';
+            //     messageContent.innerHTML = '<div class="message-text">✗ Error saving changes. Please try again.</div>';
+            // });
+
+            // Placeholder: Simulate success
+            setTimeout(() => {
+                messageContent.className = 'message-content message-success';
+                messageContent.innerHTML = '<div class="message-text">✓ Changes saved successfully! (Backend integration needed)</div>';
+                setTimeout(() => {
+                    messagePanel.style.display = 'none';
+                }, 3000);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
+
