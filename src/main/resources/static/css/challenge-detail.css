@@ -81,6 +81,7 @@
 }
 
 .challenge-description {
+    font-family: 'Gamja Flower', cursive;
     font-size: 16px;
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.75);
@@ -136,12 +137,14 @@
     color: rgba(255, 255, 255, 0.8);
     line-height: 1.6;
     margin-bottom: 12px;
+    font-family: 'Gamja Flower', cursive;
 }
 
 .instructions-list {
     list-style: none;
     padding-left: 0;
     margin-top: 12px;
+    font-family: 'Gamja Flower', cursive;
 }
 
 .instructions-list li {
@@ -786,6 +789,7 @@
 }
 
 .problem-description {
+    font-family: 'Gamja Flower', cursive;
     font-size: 16px;
     color: rgba(255, 255, 255, 0.9);
     line-height: 1.7;

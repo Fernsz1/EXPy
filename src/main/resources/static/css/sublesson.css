@@ -71,6 +71,7 @@ body {
 }
 
 .sublesson-description {
+    font-family: 'Gamja Flower', cursive;
     font-size: 16px;
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.75);

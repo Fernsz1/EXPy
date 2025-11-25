@@ -186,6 +186,7 @@ body {
 }
 
 .hero-subtitle {
+    font-family: 'Gamja Flower', cursive;
     font-size: 16px;
     color: rgba(255, 255, 255, 0.7);
     max-width: 640px;
@@ -261,6 +262,7 @@ body {
 }
 
 .lesson-subtitle {
+    font-family: 'Gamja Flower', cursive;
     font-size: 14px;
     color: rgba(255, 255, 255, 0.6);
     line-height: 1.6;
