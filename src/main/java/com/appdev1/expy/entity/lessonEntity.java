@@ -2,6 +2,8 @@ package com.appdev1.expy.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +26,7 @@ public class LessonEntity {
     private int order_index;
 
     @OneToMany(mappedBy="lesson")
+    @JsonManagedReference
     private List<ActivityEntity> activities;
 
     @ManyToOne

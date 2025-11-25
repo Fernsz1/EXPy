@@ -3,6 +3,8 @@ package com.appdev1.expy.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,13 +34,16 @@ public class ActivityEntity {
 
     @ManyToOne
     @JoinColumn(name="lesson_id")
+    @JsonBackReference
     private LessonEntity lesson;
 
     @ManyToOne
     @JoinColumn(name = "instructor_id",  referencedColumnName = "user_id")
+    @JsonBackReference(value = "instructor-activities")
     private InstructorEntity instructor;
 
     @ManyToMany(mappedBy = "activities")
+    @JsonBackReference
     private List<StudentEntity> students;
 
     public ActivityEntity() {
