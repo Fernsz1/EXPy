@@ -25,7 +25,7 @@
         <div class="user-section">
             <div class="user-dropdown" id="userDropdown">
                 <span class="user-name" th:text="${userName != null ? userName : '[User]'}">[User]</span>
-                <img th:src="${userAvatar != null ? userAvatar : '/images/logo.png'}" alt="User Avatar" class="user-avatar" loading="eager" fetchpriority="high">
+                <img th:src="${userAvatar != null ? userAvatar : '/images/avatar.png'}" alt="User Avatar" class="user-avatar" loading="eager" fetchpriority="high">
                 <svg class="dropdown-arrow" id="dropdownArrow" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
