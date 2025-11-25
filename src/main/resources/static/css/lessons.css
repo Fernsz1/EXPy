@@ -32,10 +32,36 @@
     min-height: 320px;
 }
 
+.lesson-card2 {
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    min-height: 320px;
+}
+
+.lesson-card2:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(122, 62, 157, 0.45);
+    color: #5de0e6;
+}
+
 .lesson-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 15px 40px rgba(122, 62, 157, 0.45);
+}
+
+.lesson-card.beginner:hover {
+    border-color: #5de0e6;
+    box-shadow: 0 15px 40px rgba(93, 224, 230, 0.45);
+}
+
+.lesson-card.intermediate:hover {
     border-color: #FFD700;
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.35);
 }
 
 .lesson-cover {

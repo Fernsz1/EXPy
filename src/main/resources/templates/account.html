@@ -10,6 +10,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/account.css">
+    <link rel="icon" href="/images/logoonly.png" type="image/png">
 </head>
 <body>
     <!-- Main Content -->
@@ -37,9 +38,9 @@
                     <div class="profile-picture-container">
                         <div class="profile-picture-preview">
                             <img id="profilePreview" 
-                                 th:src="${userProfilePicture != null ? userProfilePicture : '/images/logo.png'}" 
+                                 th:src="${userProfilePicture != null ? userProfilePicture : '/images/avatar.png'}" 
                                  alt="Profile Picture"
-                                 onerror="this.src='/images/logo.png'">
+                                 onerror="this.src='/images/avatar.png'">
                             <div class="profile-picture-overlay">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="white" stroke-width="2"/>
@@ -120,6 +121,29 @@
         <div id="messagePanel" class="message-panel" style="display: none;">
             <div id="messageContent" class="message-content"></div>
         </div>
+
+        <!-- Badges Section -->
+        <section class="account-section" id="badgesSection">
+            <div class="section-header">
+                <h2>My Badges</h2>
+                <p class="section-description">Click any badge to view details</p>
+            </div>
+            <div id="badgesGrid" class="badges-grid">
+                <!-- Badges will be injected here by JS -->
+            </div>
+        </section>
+
+        <!-- Badge Modal -->
+        <div id="badgeModal" class="badge-modal" style="display:none;">
+            <div class="badge-modal-backdrop" id="badgeModalBackdrop"></div>
+            <div class="badge-modal-card" id="badgeModalCard">
+                <button class="badge-modal-close" id="badgeModalClose">✕</button>
+                <img id="badgeModalImage" src="" alt="Badge Image" />
+                <h3 id="badgeModalTitle"></h3>
+                <p id="badgeModalDescription"></p>
+                <p class="badge-criteria" id="badgeModalCriteria"></p>
+            </div>
+        </div>
     </main>
 
     <script>
@@ -155,7 +179,7 @@
             if (confirm('Are you sure you want to discard your changes?')) {
                 document.getElementById('accountForm').reset();
                 // Reset profile picture preview
-                const originalSrc = /*[[${userProfilePicture != null ? userProfilePicture : '/images/logo.png'}]]*/ '/images/logo.png';
+                const originalSrc = /*[[${userProfilePicture != null ? userProfilePicture : '/images/avatar.png'}]]*/ '/images/avatar.png';
                 document.getElementById('profilePreview').src = originalSrc;
                 document.getElementById('profilePictureInput').value = '';
             }
@@ -200,8 +224,66 @@
                     messagePanel.style.display = 'none';
                 }, 3000);
             }, 1000);
-        });
-    </script>
-</body>
-</html>
+            });
+        </script>
+
+        <script>
+        // Badges: fetch and render popup modal
+        (function(){
+            const grid = document.getElementById('badgesGrid');
+            const modal = document.getElementById('badgeModal');
+            const backdrop = document.getElementById('badgeModalBackdrop');
+            const closeBtn = document.getElementById('badgeModalClose');
+            const imgEl = document.getElementById('badgeModalImage');
+            const titleEl = document.getElementById('badgeModalTitle');
+            const descEl = document.getElementById('badgeModalDescription');
+            const critEl = document.getElementById('badgeModalCriteria');
+
+            function openModal(b){
+                imgEl.src = b.imageUrl || '/images/logoonly.png';
+                titleEl.textContent = b.name || 'Badge';
+                descEl.textContent = b.description || '';
+                critEl.textContent = b.criteria ? ('Criteria: ' + b.criteria) : '';
+                modal.style.display = 'block';
+            }
+
+            function closeModal(){ modal.style.display = 'none'; }
+            backdrop.addEventListener('click', closeModal);
+            closeBtn.addEventListener('click', closeModal);
+
+            function renderBadge(b){
+                const item = document.createElement('div');
+                item.className = 'badge-item';
+                const img = document.createElement('img');
+                img.src = b.imageUrl || '/images/logoonly.png';
+                img.alt = b.name || 'badge';
+                img.loading = 'lazy';
+                item.appendChild(img);
+                const name = document.createElement('div');
+                name.className = 'badge-name';
+                name.textContent = b.name || '';
+                item.appendChild(name);
+                item.addEventListener('click', ()=> openModal(b));
+                return item;
+            }
+
+            // Fetch badges from backend
+            fetch('/api/badges/getAllBadges')
+                .then(r=> r.ok ? r.json() : Promise.reject(r.status))
+                .then(list=>{
+                    if(!Array.isArray(list) || list.length===0){
+                        grid.innerHTML = '<p class="form-hint">No badges yet.</p>';
+                        return;
+                    }
+                    grid.innerHTML = '';
+                    list.forEach(b=> grid.appendChild(renderBadge(b)));
+                })
+                .catch(err=>{
+                    console.warn('Failed to load badges', err);
+                    grid.innerHTML = '<p class="form-hint">Unable to load badges.</p>';
+                });
+        })();
+        </script>
+    </body>
+    </html>
 

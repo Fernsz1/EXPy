@@ -10,6 +10,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/home.css">
+    <link rel="icon" href="/images/logoonly.png" type="image/png">
 </head>
 <body>
     <!-- Header/Navbar Fragment -->
@@ -108,35 +109,84 @@
             <!-- Badges Section -->
             <div class="content-card badges-card">
                 <h2 class="card-title">Your Badges</h2>
-                <div class="badges-grid">
-                    <div class="badge-item">
-                        <img src="/images/steps.png" alt="Badge" class="badge-image">
-                        <span class="badge-name">First Steps</span>
+                        <div id="homeBadgesGrid" class="badges-grid">
+                            <!-- Badges injected by JS; clicking opens popup card -->
+                        </div>
                     </div>
-                    <div class="badge-item">
-                        <img src="/images/week.png" alt="Badge" class="badge-image">
-                        <span class="badge-name">Week Warrior</span>
+                    <!-- Badge Modal (home) -->
+                    <div id="homeBadgeModal" class="badge-modal" style="display:none;">
+                        <div class="badge-modal-backdrop" id="homeBadgeModalBackdrop"></div>
+                        <div class="badge-modal-card" id="homeBadgeModalCard">
+                            <button class="badge-modal-close" id="homeBadgeModalClose">✕</button>
+                            <img id="homeBadgeModalImage" src="" alt="Badge Image" />
+                            <h3 id="homeBadgeModalTitle"></h3>
+                            <p id="homeBadgeModalDescription"></p>
+                            <p class="badge-criteria" id="homeBadgeModalCriteria"></p>
+                        </div>
                     </div>
-                    <div class="badge-item">
-                        <img src="/images/code.png" alt="Badge" class="badge-image">
-                        <span class="badge-name">Code Master</span>
-                    </div>
-                    <div class="badge-item">
-                        <img src="/images/champion.png" alt="Badge" class="badge-image">
-                        <span class="badge-name">Champion</span>
-                    </div>
-                    <div class="badge-item">
-                        <img src="/images/python.png" alt="Badge" class="badge-image">
-                        <span class="badge-name">Python Pro</span>
-                    </div>
-                    <div class="badge-item">
-                        <img src="/images/speed.png" alt="Badge" class="badge-image">
-                        <span class="badge-name">Speed Runner</span>
-                    </div>
-                </div>
             </div>
         </section>
     </main>
+
+    <script>
+    // Home badges: fetch and render popup card
+    (function(){
+        const grid = document.getElementById('homeBadgesGrid');
+        const modal = document.getElementById('homeBadgeModal');
+        const backdrop = document.getElementById('homeBadgeModalBackdrop');
+        const closeBtn = document.getElementById('homeBadgeModalClose');
+        const imgEl = document.getElementById('homeBadgeModalImage');
+        const titleEl = document.getElementById('homeBadgeModalTitle');
+        const descEl = document.getElementById('homeBadgeModalDescription');
+        const critEl = document.getElementById('homeBadgeModalCriteria');
+
+        function openModal(b){
+            imgEl.src = b.imageUrl || '/images/logoonly.png';
+            titleEl.textContent = b.name || 'Badge';
+            descEl.textContent = b.description || '';
+            critEl.textContent = b.criteria ? ('Criteria: ' + b.criteria) : '';
+            modal.style.display = 'flex';
+            // small entrance animation
+            document.getElementById('homeBadgeModalCard').classList.add('badge-pop');
+            setTimeout(()=> document.getElementById('homeBadgeModalCard').classList.remove('badge-pop'), 350);
+        }
+
+        function closeModal(){ modal.style.display = 'none'; }
+        backdrop.addEventListener('click', closeModal);
+        closeBtn.addEventListener('click', closeModal);
+
+        function renderBadge(b){
+            const item = document.createElement('div');
+            item.className = 'badge-item';
+            const img = document.createElement('img');
+            img.src = b.imageUrl || '/images/logoonly.png';
+            img.alt = b.name || 'badge';
+            img.className = 'badge-image';
+            item.appendChild(img);
+            const name = document.createElement('div');
+            name.className = 'badge-name';
+            name.textContent = b.name || '';
+            item.appendChild(name);
+            item.addEventListener('click', ()=> openModal(b));
+            return item;
+        }
+
+        fetch('/api/badges/getAllBadges')
+            .then(r=> r.ok ? r.json() : Promise.reject(r.status))
+            .then(list=>{
+                if(!Array.isArray(list) || list.length===0){
+                    grid.innerHTML = '<p class="form-hint">No badges yet.</p>';
+                    return;
+                }
+                grid.innerHTML = '';
+                list.forEach(b=> grid.appendChild(renderBadge(b)));
+            })
+            .catch(err=>{
+                console.warn('Failed to load badges', err);
+                grid.innerHTML = '<p class="form-hint">Unable to load badges.</p>';
+            });
+    })();
+    </script>
 
 </body>
 </html>

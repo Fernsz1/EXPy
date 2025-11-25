@@ -11,6 +11,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/sublesson.css">
+    <link rel="icon" href="/images/logoonly.png" type="image/png">
 </head>
 <body>
 <main class="main-content">
@@ -47,8 +48,8 @@
             <h2>Topics</h2>
 
             <div class="topic-navigation">
-                <button class="nav-button" id="prev-topic-btn">← Previous</button>
-                <button class="nav-button primary" id="next-topic-btn">Next →</button>
+                <button type="button" class="nav-button" id="prev-topic-btn">← Previous</button>
+                <button type="button" class="nav-button primary" id="next-topic-btn">Next →</button>
             </div>
         </div>
 
@@ -159,6 +160,23 @@ print(____)</code></pre>
     const topicCards = Array.from(document.querySelectorAll('.topic-card'));
     const prevBtn = document.getElementById('prev-topic-btn');
     const nextBtn = document.getElementById('next-topic-btn');
+
+    // Prevent accidental scrolling from changing or looping topics by
+    // disabling wheel/touchmove on the topics timeline container.
+    (function disableTopicsScroll(){
+        const timeline = document.querySelector('.topics-timeline');
+        if(!timeline) return;
+        // Prevent wheel from causing any default scroll behavior here
+        timeline.addEventListener('wheel', function(e){
+            // stop propagation and default to keep the timeline static
+            e.preventDefault();
+        }, { passive: false });
+
+        // Prevent touchmove (mobile) from scrolling the timeline
+        timeline.addEventListener('touchmove', function(e){
+            e.preventDefault();
+        }, { passive: false });
+    })();
 
     function updateTopicUI() {
         topicCards.forEach(card => {

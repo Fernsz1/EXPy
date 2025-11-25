@@ -132,7 +132,7 @@
 }
 
 .challenge-card.code-sprint .challenge-type {
-    color: #ff9f43;
+    color: #4ade80;
 }
 
 .challenge-title {
@@ -165,8 +165,8 @@
 }
 
 .challenge-card.code-sprint:hover {
-    box-shadow: 0 15px 40px rgba(255, 159, 67, 0.4);
-    border-color: #ff9f43;
+    box-shadow: 0 15px 40px rgba(74, 222, 128, 0.4);
+    border-color: #4ade80;
 }
 
 @media (max-width: 768px) {

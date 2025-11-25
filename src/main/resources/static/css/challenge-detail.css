@@ -48,9 +48,9 @@
 }
 
 .challenge-type-badge.code-sprint {
-    background: rgba(255, 159, 67, 0.2);
-    border: 1px solid rgba(255, 159, 67, 0.5);
-    color: #ff9f43;
+    background: rgba(8, 121, 29, 0.2);
+    border: 1px solid rgba(24, 184, 93, 0.916);
+    color: #4ade80;
 }
 
 .challenge-title {
