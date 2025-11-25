@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -31,6 +31,7 @@ public class StudentEntity extends UserEntity {
         joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "activity_id")
     )
+    @JsonManagedReference
     private Set<ActivityEntity> activities = new HashSet<>();
     
     @ManyToMany(mappedBy = "students")

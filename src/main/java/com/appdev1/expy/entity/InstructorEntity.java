@@ -3,6 +3,8 @@ package com.appdev1.expy.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -24,6 +26,7 @@ public class InstructorEntity extends UserEntity {
     private List<CohortEntity> cohorts = new ArrayList<>();
 
     @OneToMany(mappedBy = "instructor")
+    @JsonManagedReference(value = "instructor-activities") 
     private List<ActivityEntity> activities = new ArrayList<>();
 
     public InstructorEntity() {}
