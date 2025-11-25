@@ -1,25 +1,5 @@
-/* Challenge Detail Pages - Shared Styles */
-
-.back-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: #ffd700;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 500;
-    padding: 8px 16px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 215, 0, 0.4);
-    background: rgba(255, 215, 0, 0.1);
-    transition: all 0.3s ease;
-    margin-bottom: 25px;
-}
-
-.back-button:hover {
-    background: rgba(255, 215, 0, 0.2);
-    transform: translateX(-5px);
-}
+/* Challenge Detail Pages - Specific Styles */
+/* Note: Common styles (back-button, page-title, page-subtitle) are in common.css */
 
 .challenge-header {
     background: rgba(255, 255, 255, 0.08);
@@ -81,6 +61,7 @@
 }
 
 .challenge-description {
+    font-family: 'Gamja Flower', cursive;
     font-size: 16px;
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.75);
@@ -136,12 +117,14 @@
     color: rgba(255, 255, 255, 0.8);
     line-height: 1.6;
     margin-bottom: 12px;
+    font-family: 'Gamja Flower', cursive;
 }
 
 .instructions-list {
     list-style: none;
     padding-left: 0;
     margin-top: 12px;
+    font-family: 'Gamja Flower', cursive;
 }
 
 .instructions-list li {
@@ -786,6 +769,7 @@
 }
 
 .problem-description {
+    font-family: 'Gamja Flower', cursive;
     font-size: 16px;
     color: rgba(255, 255, 255, 0.9);
     line-height: 1.7;

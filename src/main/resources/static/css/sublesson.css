@@ -1,41 +1,9 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: 'Orbitron', sans-serif;
-    color: #fff;
-    background: linear-gradient(140deg, #140026 0%, #22003d 50%, #140026 100%);
-    min-height: 100vh;
-}
+/* Sublesson Page Specific Styles */
+/* Note: Common styles (reset, body, main-content, back-button) are in common.css */
 
 .main-content {
     max-width: 1200px;
-    margin: 0 auto;
     padding: 40px 30px 80px;
-}
-
-.back-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: #ffd700;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 500;
-    padding: 8px 16px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 215, 0, 0.4);
-    background: rgba(255, 215, 0, 0.1);
-    transition: all 0.3s ease;
-    margin-bottom: 25px;
-}
-
-.back-button:hover {
-    background: rgba(255, 215, 0, 0.2);
-    transform: translateX(-5px);
 }
 
 .sublesson-header {
@@ -71,6 +39,7 @@ body {
 }
 
 .sublesson-description {
+    font-family: 'Gamja Flower', cursive;
     font-size: 16px;
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.75);

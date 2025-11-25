@@ -59,6 +59,19 @@ public class PageController {
         return "playground";
     }
 
+    @GetMapping("/account")
+    public String account(Model model) {
+        // Placeholder data - replace with actual user data from session/authentication
+        model.addAttribute("userName", "John Doe");
+        model.addAttribute("userFirstName", "John");
+        model.addAttribute("userLastName", "Doe");
+        model.addAttribute("userEmail", "john.doe@example.com");
+        model.addAttribute("userContactNumber", "+1 234 567 8900");
+        model.addAttribute("userProfilePicture", "/images/logo.png");
+        model.addAttribute("userAvatar", "/images/logo.png");
+        return "account";
+    }
+
     // Challenge Routes
     @GetMapping("/challenge/completecode/{id}")
     public String completeCodeChallenge(@PathVariable Long id, Model model) {

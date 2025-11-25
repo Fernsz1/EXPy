@@ -1,0 +1,267 @@
+/* ============================================
+   COMMON STYLES - Shared across all pages
+   ============================================ */
+
+/* Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Body */
+body {
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    background: linear-gradient(140deg, #140026 0%, #22003d 50%, #140026 100%);
+    min-height: 100vh;
+}
+
+/* Navbar - Shared across all pages with navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 100;
+    overflow: visible;
+}
+
+.navbar .left {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.navbar .logo img {
+    height: 50px;
+}
+
+.navbar nav {
+    display: flex;
+    gap: 30px;
+}
+
+.navbar nav .nav-link {
+    color: #333;
+    text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.navbar nav .nav-link:hover,
+.navbar nav .nav-link.active {
+    background: #7A3E9D;
+    color: #fff;
+}
+
+/* User Dropdown - Shared across all pages with navbar */
+.user-section {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 1001;
+}
+
+.user-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.user-dropdown:hover {
+    background: rgba(122, 62, 157, 0.1);
+}
+
+.user-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #7A3E9D;
+    object-fit: cover;
+}
+
+.dropdown-arrow {
+    color: #333;
+    transition: transform 0.3s ease;
+    transform-origin: center;
+}
+
+.user-dropdown:hover .dropdown-arrow {
+    transform: translateY(2px);
+}
+
+.user-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    z-index: 9999;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.user-dropdown-menu.show {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    pointer-events: auto;
+    display: block !important;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background: rgba(122, 62, 157, 0.1);
+    color: #7A3E9D;
+}
+
+.dropdown-item svg {
+    width: 16px;
+    height: 16px;
+    color: #7A3E9D;
+}
+
+/* Main Content - Shared layout */
+.main-content {
+    padding: 40px 50px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Back Button - Shared across detail pages */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #ffd700;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    background: rgba(255, 215, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 25px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.back-button:hover {
+    background: rgba(255, 215, 0, 0.2);
+    transform: translateX(-5px);
+}
+
+/* Hero Section - Shared across challenges and lessons */
+.hero-section,
+.challenges-hero,
+.lessons-hero {
+    margin-bottom: 40px;
+    padding: 32px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(6px);
+}
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 12px;
+    color: #FFD700;
+    margin-bottom: 12px;
+}
+
+.hero-title {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #fff;
+}
+
+.hero-subtitle {
+    font-family: 'Gamja Flower', cursive;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 640px;
+    line-height: 1.6;
+}
+
+/* Page Title - Shared across pages */
+.page-title {
+    font-size: 42px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+}
+
+.page-subtitle {
+    font-family: 'Gamja Flower', cursive;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+}
+
+/* Responsive - Shared navbar responsive styles */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+    }
+
+    .navbar nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+
+    .hero-title,
+    .page-title {
+        font-size: 32px;
+    }
+}
+

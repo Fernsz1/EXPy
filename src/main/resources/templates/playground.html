@@ -8,11 +8,15 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Gamja+Flower&display=swap" rel="stylesheet">
     <!-- CSS -->
+    <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/playground.css">
 </head>
 <body>
     <!-- Header/Navbar Fragment -->
     <div th:replace="~{fragments/navbar :: navbar(${activePage})}"></div>
+    
+    <!-- Navbar Dropdown Script -->
+    <script src="/js/navbar-dropdown.js"></script>
 
     <!-- Main Content -->
     <main class="main-content">
