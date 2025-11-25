@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${challengeTitle != null ? challengeTitle + ' - EXPy' : 'Debugging Challenge - EXPy'}">Debugging Challenge - EXPy</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Gamja+Flower&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/challenges.css">
+    <link rel="stylesheet" href="/css/challenge-detail.css">
+</head>
+<body>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Back Button -->
+        <a th:href="@{/challenges}" class="back-button">← Back to Challenges</a>
+
+        <!-- Challenge Header -->
+        <section class="challenge-header">
+            <div class="challenge-meta">
+                <span class="challenge-type-badge debugging">Debugging</span>
+                <h1 class="challenge-title" th:text="${challengeTitle != null ? challengeTitle : 'Find the Bug'}">Find the Bug</h1>
+                <p class="challenge-description" 
+                   th:text="${challengeDescription != null ? challengeDescription : 'Identify and fix errors in broken Python code. Sharpen your debugging skills.'}">
+                    Identify and fix errors in broken Python code. Sharpen your debugging skills.
+                </p>
+            </div>
+
+            <div class="challenge-rewards">
+                <div class="exp-badge-large">
+                    <span class="exp-label">Reward</span>
+                    <span class="exp-value" th:text="${expReward != null ? '+ ' + expReward + ' EXP' : '+ 125 EXP'}">+ 125 EXP</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Challenge Instructions -->
+        <section class="challenge-instructions">
+            <h2>Instructions</h2>
+            <p>The code below contains errors. Your task is to:</p>
+            <ul class="instructions-list">
+                <li>Identify all bugs (syntax errors, logic mistakes, exceptions)</li>
+                <li>Fix the code in the editor below</li>
+                <li>Ensure the code runs correctly and produces the expected output</li>
+            </ul>
+        </section>
+
+        <!-- Broken Code Section -->
+        <section class="broken-code-section">
+            <div class="section-header">
+                <h3>Broken Code</h3>
+                <span class="error-count" id="error-count">Errors: Unknown</span>
+            </div>
+            <div class="code-block broken">
+                <pre><code th:if="${brokenCode != null}" th:text="${brokenCode}"></code><code th:unless="${brokenCode != null}">def calculate_average(numbers):
+    total = 0
+    for num in numbers:
+        total += num
+    average = total / len(numbers)  # Error: division by zero possible
+    return average
+
+# Test case
+result = calculate_average([])  # This will cause an error
+print(result)</code></pre>
+            </div>
+            <div class="error-hints" th:if="${errorHints != null}">
+                <h4>Error Hints</h4>
+                <ul>
+                    <li th:each="hint : ${errorHints}" th:text="${hint}">Check for division by zero</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Code Editor Section -->
+        <section class="code-editor-section">
+            <div class="section-header">
+                <h3>Your Fixed Code</h3>
+                <div class="editor-actions">
+                    <button class="btn-secondary" onclick="runCode()">▶ Run Code</button>
+                    <button class="btn-secondary" onclick="resetCode()">Reset to Original</button>
+                    <button class="btn-secondary" onclick="showHints()">💡 Show Hints</button>
+                </div>
+            </div>
+            <div class="editor-wrapper">
+                <div class="line-numbers" id="line-numbers"></div>
+                <textarea 
+                    id="code-editor" 
+                    class="code-editor" 
+                    placeholder="# Fix the bugs in the code above..."
+                    th:attr="data-original=${brokenCode}"
+                    spellcheck="false">def calculate_average(numbers):
+    total = 0
+    for num in numbers:
+        total += num
+    average = total / len(numbers)  # Error: division by zero possible
+    return average
+
+# Test case
+result = calculate_average([])  # This will cause an error
+print(result)</textarea>
+            </div>
+            <div id="output-panel" class="output-panel" style="display: none;">
+                <div class="output-header">
+                    <span>Output</span>
+                    <button class="btn-close" onclick="closeOutput()">×</button>
+                </div>
+                <div id="output-content" class="output-content"></div>
+            </div>
+        </section>
+
+        <!-- Expected Output Section -->
+        <section class="expected-output-section" th:if="${expectedOutput != null}">
+            <h3>Expected Output</h3>
+            <div class="code-block expected">
+                <pre><code th:text="${expectedOutput}"># When calculate_average([1, 2, 3, 4, 5]) is called:
+# Expected output: 3.0
+
+# When calculate_average([]) is called:
+# Expected output: 0 or appropriate error handling</code></pre>
+            </div>
+        </section>
+
+        <!-- Test Cases Section -->
+        <section class="test-cases-section" th:if="${testCases != null}">
+            <h3>Test Cases</h3>
+            <div class="test-cases-list">
+                <div class="test-case" th:each="testCase, iterStat : ${testCases}">
+                    <div class="test-case-header">
+                        <span class="test-case-number">Test Case <span th:text="${iterStat.count}">1</span></span>
+                        <span class="test-case-status pending">Pending</span>
+                    </div>
+                    <div class="test-case-details">
+                        <p><strong>Input:</strong> <code th:text="${testCase.input}">calculate_average([1, 2, 3])</code></p>
+                        <p><strong>Expected Output:</strong> <code th:text="${testCase.expectedOutput}">2.0</code></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Submit Section -->
+        <section class="submit-section">
+            <div class="submit-actions">
+                <button class="btn-primary debugging" onclick="submitSolution()">Submit Fixed Code</button>
+                <button class="btn-secondary" onclick="checkSyntax()">Check Syntax</button>
+            </div>
+            <div id="feedback-panel" class="feedback-panel" style="display: none;">
+                <div id="feedback-content"></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const challengeId = /*[[${challengeId}]]*/ null;
+        let lineNumbers = document.getElementById('line-numbers');
+        let editor = document.getElementById('code-editor');
+        
+        // Get original code from data attribute or code block
+        const originalCodeAttr = editor.getAttribute('data-original');
+        const originalCode = originalCodeAttr || document.querySelector('.code-block.broken code').textContent;
+        
+        // Initialize editor with broken code if provided
+        if (originalCodeAttr) {
+            editor.value = originalCodeAttr;
+        }
+
+        // Update line numbers
+        function updateLineNumbers() {
+            const lines = editor.value.split('\n').length;
+            lineNumbers.innerHTML = Array.from({length: lines}, (_, i) => `<div>${i + 1}</div>`).join('');
+        }
+
+        editor.addEventListener('input', updateLineNumbers);
+        editor.addEventListener('scroll', () => {
+            lineNumbers.scrollTop = editor.scrollTop;
+        });
+        updateLineNumbers();
+
+        function runCode() {
+            const code = editor.value;
+            const outputPanel = document.getElementById('output-panel');
+            const outputContent = document.getElementById('output-content');
+            
+            outputPanel.style.display = 'block';
+            outputContent.textContent = 'Running code...';
+            
+            // Placeholder: Backend will handle code execution
+            setTimeout(() => {
+                outputContent.textContent = 'Code execution will be handled by backend API.';
+            }, 500);
+        }
+
+        function closeOutput() {
+            document.getElementById('output-panel').style.display = 'none';
+        }
+
+        function resetCode() {
+            editor.value = originalCode;
+            updateLineNumbers();
+        }
+
+        function showHints() {
+            const hintsSection = document.querySelector('.error-hints');
+            if (hintsSection) {
+                hintsSection.style.display = hintsSection.style.display === 'none' ? 'block' : 'none';
+            } else {
+                alert('No hints available for this challenge.');
+            }
+        }
+
+        function checkSyntax() {
+            const code = editor.value;
+            // Placeholder: Backend will check syntax
+            alert('Syntax check will be handled by backend API.');
+        }
+
+        function submitSolution() {
+            const code = editor.value;
+            const feedbackPanel = document.getElementById('feedback-panel');
+            const feedbackContent = document.getElementById('feedback-content');
+            
+            feedbackPanel.style.display = 'block';
+            feedbackContent.innerHTML = '<p>Submitting solution... (Backend integration needed)</p>';
+            
+            // Placeholder: Backend will validate solution
+            // fetch(`/api/challenges/${challengeId}/submit`, { method: 'POST', body: JSON.stringify({code}) })
+        }
+    </script>
+</body>
+</html>
+

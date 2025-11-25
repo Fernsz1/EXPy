@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${challengeTitle != null ? challengeTitle + ' - EXPy' : 'Code Sprint - EXPy'}">Code Sprint - EXPy</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Gamja+Flower&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/challenges.css">
+    <link rel="stylesheet" href="/css/challenge-detail.css">
+</head>
+<body>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Back Button -->
+        <a th:href="@{/challenges}" class="back-button">← Back to Challenges</a>
+
+        <!-- Challenge Header -->
+        <section class="challenge-header">
+            <div class="challenge-meta">
+                <span class="challenge-type-badge code-sprint">Code Sprint</span>
+                <h1 class="challenge-title" th:text="${challengeTitle != null ? challengeTitle : 'Speed Coding Challenge'}">Speed Coding Challenge</h1>
+                <p class="challenge-description" 
+                   th:text="${challengeDescription != null ? challengeDescription : 'Race against the clock! Solve problems under time pressure and improve your speed.'}">
+                    Race against the clock! Solve problems under time pressure and improve your speed.
+                </p>
+            </div>
+
+            <div class="challenge-rewards">
+                <div class="exp-badge-large">
+                    <span class="exp-label">Reward</span>
+                    <span class="exp-value" th:text="${expReward != null ? '+ ' + expReward + ' EXP' : '+ 200 EXP'}">+ 200 EXP</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timer Section -->
+        <section class="timer-section">
+            <div class="timer-display" id="timer-display">
+                <div class="timer-circle">
+                    <svg class="timer-svg" viewBox="0 0 100 100">
+                        <circle class="timer-bg" cx="50" cy="50" r="45"></circle>
+                        <circle class="timer-progress" id="timer-progress" cx="50" cy="50" r="45"></circle>
+                    </svg>
+                    <div class="timer-text">
+                        <span id="timer-minutes">05</span>:<span id="timer-seconds">00</span>
+                    </div>
+                </div>
+                <div class="timer-controls">
+                    <button class="btn-timer" id="start-btn" onclick="startTimer()">▶ Start</button>
+                    <button class="btn-timer" id="pause-btn" onclick="pauseTimer()" style="display: none;">⏸ Pause</button>
+                    <button class="btn-timer" id="reset-btn" onclick="resetTimer()">Reset</button>
+                </div>
+            </div>
+            <div class="timer-status" id="timer-status">Ready to start</div>
+        </section>
+
+        <!-- Challenge Instructions -->
+        <section class="challenge-instructions">
+            <h2>Problem Statement</h2>
+            <div class="problem-description" th:text="${problemDescription != null ? problemDescription : 'Write a Python function that takes a list of integers and returns the sum of all even numbers in the list. Complete this within the time limit!'}">
+                Write a Python function that takes a list of integers and returns the sum of all even numbers in the list. Complete this within the time limit!
+            </div>
+            <div class="problem-examples" th:if="${examples != null}">
+                <h3>Examples</h3>
+                <div class="example-item" th:each="example : ${examples}">
+                    <p><strong>Input:</strong> <code th:text="${example.input}">[1, 2, 3, 4, 5, 6]</code></p>
+                    <p><strong>Output:</strong> <code th:text="${example.output}">12</code></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Code Editor Section -->
+        <section class="code-editor-section">
+            <div class="section-header">
+                <h3>Your Solution</h3>
+                <div class="editor-actions">
+                    <button class="btn-secondary" onclick="runCode()">▶ Run Code</button>
+                    <button class="btn-secondary" onclick="clearCode()">Clear</button>
+                </div>
+            </div>
+            <div class="editor-wrapper">
+                <div class="line-numbers" id="line-numbers"></div>
+                <textarea 
+                    id="code-editor" 
+                    class="code-editor" 
+                    placeholder="# Write your solution here..."
+                    spellcheck="false"></textarea>
+            </div>
+            <div id="output-panel" class="output-panel" style="display: none;">
+                <div class="output-header">
+                    <span>Output</span>
+                    <button class="btn-close" onclick="closeOutput()">×</button>
+                </div>
+                <div id="output-content" class="output-content"></div>
+            </div>
+        </section>
+
+        <!-- Test Cases Section -->
+        <section class="test-cases-section">
+            <h3>Test Cases</h3>
+            <div class="test-cases-list">
+                <div class="test-case" th:each="testCase, iterStat : ${testCases != null ? testCases : {}}">
+                    <div class="test-case-header">
+                        <span class="test-case-number">Test Case <span th:text="${iterStat.count}">1</span></span>
+                        <span class="test-case-status pending">Pending</span>
+                    </div>
+                    <div class="test-case-details">
+                        <p><strong>Input:</strong> <code th:text="${testCase.input}">[1, 2, 3, 4, 5]</code></p>
+                        <p><strong>Expected Output:</strong> <code th:text="${testCase.expectedOutput}">6</code></p>
+                    </div>
+                </div>
+                <!-- Fallback test case -->
+                <div class="test-case" th:if="${testCases == null || testCases.isEmpty()}">
+                    <div class="test-case-header">
+                        <span class="test-case-number">Test Case 1</span>
+                        <span class="test-case-status pending">Pending</span>
+                    </div>
+                    <div class="test-case-details">
+                        <p><strong>Input:</strong> <code>[1, 2, 3, 4, 5]</code></p>
+                        <p><strong>Expected Output:</strong> <code>6</code></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Submit Section -->
+        <section class="submit-section">
+            <div class="submit-actions">
+                <button class="btn-primary code-sprint" onclick="submitSolution()">Submit Solution</button>
+                <button class="btn-secondary" onclick="giveUp()">Give Up</button>
+            </div>
+            <div id="feedback-panel" class="feedback-panel" style="display: none;">
+                <div id="feedback-content"></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const challengeId = /*[[${challengeId}]]*/ null;
+        const timeLimit = /*[[${timeLimit != null ? timeLimit : 300}]]*/ 300; // 5 minutes default
+        let timeRemaining = timeLimit;
+        let timerInterval = null;
+        let isRunning = false;
+        let lineNumbers = document.getElementById('line-numbers');
+        let editor = document.getElementById('code-editor');
+
+        // Update line numbers
+        function updateLineNumbers() {
+            const lines = editor.value.split('\n').length;
+            lineNumbers.innerHTML = Array.from({length: lines}, (_, i) => `<div>${i + 1}</div>`).join('');
+        }
+
+        editor.addEventListener('input', updateLineNumbers);
+        editor.addEventListener('scroll', () => {
+            lineNumbers.scrollTop = editor.scrollTop;
+        });
+        updateLineNumbers();
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+        }
+
+        function updateTimer() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            document.getElementById('timer-minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('timer-seconds').textContent = String(seconds).padStart(2, '0');
+            
+            const progress = ((timeLimit - timeRemaining) / timeLimit) * 100;
+            const circumference = 2 * Math.PI * 45;
+            const offset = circumference - (progress / 100) * circumference;
+            document.getElementById('timer-progress').style.strokeDashoffset = offset;
+            
+            if (timeRemaining <= 0) {
+                timeUp();
+            }
+        }
+
+        function startTimer() {
+            if (isRunning) return;
+            isRunning = true;
+            document.getElementById('start-btn').style.display = 'none';
+            document.getElementById('pause-btn').style.display = 'inline-block';
+            document.getElementById('timer-status').textContent = 'Time is running!';
+            
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimer();
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            if (!isRunning) return;
+            isRunning = false;
+            clearInterval(timerInterval);
+            document.getElementById('start-btn').style.display = 'inline-block';
+            document.getElementById('pause-btn').style.display = 'none';
+            document.getElementById('timer-status').textContent = 'Paused';
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timeRemaining = timeLimit;
+            updateTimer();
+            document.getElementById('timer-status').textContent = 'Ready to start';
+        }
+
+        function timeUp() {
+            pauseTimer();
+            document.getElementById('timer-status').textContent = 'Time\'s up!';
+            alert('Time is up! Your solution will be automatically submitted.');
+            submitSolution();
+        }
+
+        function runCode() {
+            const code = editor.value;
+            const outputPanel = document.getElementById('output-panel');
+            const outputContent = document.getElementById('output-content');
+            
+            outputPanel.style.display = 'block';
+            outputContent.textContent = 'Running code...';
+            
+            // Placeholder: Backend will handle code execution
+            setTimeout(() => {
+                outputContent.textContent = 'Code execution will be handled by backend API.';
+            }, 500);
+        }
+
+        function closeOutput() {
+            document.getElementById('output-panel').style.display = 'none';
+        }
+
+        function clearCode() {
+            if (confirm('Are you sure you want to clear your code?')) {
+                editor.value = '';
+                updateLineNumbers();
+            }
+        }
+
+        function submitSolution() {
+            const code = editor.value;
+            const timeUsed = timeLimit - timeRemaining;
+            const feedbackPanel = document.getElementById('feedback-panel');
+            const feedbackContent = document.getElementById('feedback-content');
+            
+            pauseTimer();
+            feedbackPanel.style.display = 'block';
+            feedbackContent.innerHTML = `<p>Submitting solution... Time used: ${formatTime(timeUsed)}</p>`;
+            
+            // Placeholder: Backend will validate solution
+            // fetch(`/api/challenges/${challengeId}/submit`, { 
+            //     method: 'POST', 
+            //     body: JSON.stringify({code, timeUsed}) 
+            // })
+        }
+
+        function giveUp() {
+            if (confirm('Are you sure you want to give up? You will not receive any EXP.')) {
+                window.location.href = '/challenges';
+            }
+        }
+
+        // Initialize timer
+        updateTimer();
+    </script>
+</body>
+</html>
+

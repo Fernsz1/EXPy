@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${challengeTitle != null ? challengeTitle + ' - EXPy' : 'Complete the Code - EXPy'}">Complete the Code - EXPy</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Gamja+Flower&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/challenges.css">
+    <link rel="stylesheet" href="/css/challenge-detail.css">
+</head>
+<body>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Back Button -->
+        <a th:href="@{/challenges}" class="back-button">← Back to Challenges</a>
+
+        <!-- Challenge Header -->
+        <section class="challenge-header">
+            <div class="challenge-meta">
+                <span class="challenge-type-badge complete-code">Complete the Code</span>
+                <h1 class="challenge-title" th:text="${challengeTitle != null ? challengeTitle : 'Fill the Gaps'}">Fill the Gaps</h1>
+                <p class="challenge-description" 
+                   th:text="${challengeDescription != null ? challengeDescription : 'Finish incomplete Python functions and test your understanding of core concepts.'}">
+                    Finish incomplete Python functions and test your understanding of core concepts.
+                </p>
+            </div>
+
+            <div class="challenge-rewards">
+                <div class="exp-badge-large">
+                    <span class="exp-label">Reward</span>
+                    <span class="exp-value" th:text="${expReward != null ? '+ ' + expReward + ' EXP' : '+ 50 EXP'}">+ 50 EXP</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Challenge Instructions -->
+        <section class="challenge-instructions">
+            <h2>Instructions</h2>
+            <p>Complete the incomplete code below. Fill in the blanks (marked with <code>____</code>) to make the code work correctly.</p>
+        </section>
+
+        <!-- Code Template Section -->
+        <section class="code-template-section">
+            <div class="section-header">
+                <h3>Incomplete Code</h3>
+                <button class="btn-icon" onclick="copyTemplate()" title="Copy template">
+                    <span>📋</span>
+                </button>
+            </div>
+            <div class="code-block template">
+                <pre><code th:if="${codeTemplate != null}" th:text="${codeTemplate}"></code><code th:unless="${codeTemplate != null}">def calculate_sum(a, b):
+    # Complete the function below
+    result = ____
+    return result
+
+# Test your solution
+print(calculate_sum(5, 3))  # Should output: 8</code></pre>
+            </div>
+        </section>
+
+        <!-- Code Editor Section -->
+        <section class="code-editor-section">
+            <div class="section-header">
+                <h3>Your Solution</h3>
+                <div class="editor-actions">
+                    <button class="btn-secondary" onclick="runCode()">▶ Run Code</button>
+                    <button class="btn-secondary" onclick="resetCode()">Reset</button>
+                </div>
+            </div>
+            <div class="editor-wrapper">
+                <div class="line-numbers" id="line-numbers"></div>
+                <textarea 
+                    id="code-editor" 
+                    class="code-editor" 
+                    placeholder="# Complete the code here..."
+                    th:attr="data-template=${codeTemplate}"
+                    spellcheck="false">def calculate_sum(a, b):
+    # Complete the function below
+    result = ____
+    return result
+
+# Test your solution
+print(calculate_sum(5, 3))  # Should output: 8</textarea>
+            </div>
+            <div id="output-panel" class="output-panel" style="display: none;">
+                <div class="output-header">
+                    <span>Output</span>
+                    <button class="btn-close" onclick="closeOutput()">×</button>
+                </div>
+                <div id="output-content" class="output-content"></div>
+            </div>
+        </section>
+
+        <!-- Test Cases Section -->
+        <section class="test-cases-section" th:if="${testCases != null}">
+            <h3>Test Cases</h3>
+            <div class="test-cases-list">
+                <div class="test-case" th:each="testCase, iterStat : ${testCases}">
+                    <div class="test-case-header">
+                        <span class="test-case-number">Test Case <span th:text="${iterStat.count}">1</span></span>
+                        <span class="test-case-status pending">Pending</span>
+                    </div>
+                    <div class="test-case-details">
+                        <p><strong>Input:</strong> <code th:text="${testCase.input}">calculate_sum(5, 3)</code></p>
+                        <p><strong>Expected Output:</strong> <code th:text="${testCase.expectedOutput}">8</code></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Submit Section -->
+        <section class="submit-section">
+            <div class="submit-actions">
+                <button class="btn-primary complete-code" onclick="submitSolution()">Submit Solution</button>
+                <button class="btn-secondary" onclick="requestHint()">💡 Get Hint</button>
+            </div>
+            <div id="feedback-panel" class="feedback-panel" style="display: none;">
+                <div id="feedback-content"></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const challengeId = /*[[${challengeId}]]*/ null;
+        let lineNumbers = document.getElementById('line-numbers');
+        let editor = document.getElementById('code-editor');
+
+        // Initialize editor with template if provided
+        const template = editor.getAttribute('data-template');
+        if (template) {
+            editor.value = template;
+        }
+
+        // Update line numbers
+        function updateLineNumbers() {
+            const lines = editor.value.split('\n').length;
+            lineNumbers.innerHTML = Array.from({length: lines}, (_, i) => `<div>${i + 1}</div>`).join('');
+        }
+
+        editor.addEventListener('input', updateLineNumbers);
+        editor.addEventListener('scroll', () => {
+            lineNumbers.scrollTop = editor.scrollTop;
+        });
+        updateLineNumbers();
+
+        function copyTemplate() {
+            const template = document.querySelector('.code-block.template code').textContent;
+            navigator.clipboard.writeText(template);
+            alert('Template copied to clipboard!');
+        }
+
+        function runCode() {
+            const code = editor.value;
+            const outputPanel = document.getElementById('output-panel');
+            const outputContent = document.getElementById('output-content');
+            
+            outputPanel.style.display = 'block';
+            outputContent.textContent = 'Running code...';
+            
+            // Placeholder: Backend will handle code execution
+            setTimeout(() => {
+                outputContent.textContent = 'Code execution will be handled by backend API.';
+            }, 500);
+        }
+
+        function closeOutput() {
+            document.getElementById('output-panel').style.display = 'none';
+        }
+
+        function resetCode() {
+            const template = document.querySelector('.code-block.template code').textContent;
+            editor.value = template;
+            updateLineNumbers();
+        }
+
+        function submitSolution() {
+            const code = editor.value;
+            const feedbackPanel = document.getElementById('feedback-panel');
+            const feedbackContent = document.getElementById('feedback-content');
+            
+            feedbackPanel.style.display = 'block';
+            feedbackContent.innerHTML = '<p>Submitting solution... (Backend integration needed)</p>';
+            
+            // Placeholder: Backend will validate solution
+            // fetch(`/api/challenges/${challengeId}/submit`, { method: 'POST', body: JSON.stringify({code}) })
+        }
+
+        function requestHint() {
+            alert('Hint feature will be implemented by backend.');
+        }
+    </script>
+</body>
+</html>
+

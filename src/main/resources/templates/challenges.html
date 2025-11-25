@@ -28,104 +28,120 @@
 
         <section class="challenges-grid">
             <!-- Complete the Code Challenges -->
-            <article class="challenge-card complete-code">
-                <div class="exp-badge">+50 EXP</div>
-                <div class="challenge-cover">
-                    <img src="/images/logo.png" alt="Challenge cover">
-                </div>
-                <div class="challenge-body">
-                    <span class="challenge-type">Complete the Code</span>
-                    <h3 class="challenge-title">Fill the Gaps</h3>
-                    <p class="challenge-subtitle">Finish incomplete Python functions and test your understanding of core concepts.</p>
-                </div>
-            </article>
+            <a th:href="@{/challenge/completecode/1}">
+                <article class="challenge-card complete-code">
+                    <div class="exp-badge">+50 EXP</div>
+                    <div class="challenge-cover">
+                        <img src="/images/logo.png" alt="Challenge cover">
+                    </div>
+                    <div class="challenge-body">
+                        <span class="challenge-type">Complete the Code</span>
+                        <h3 class="challenge-title">Fill the Gaps</h3>
+                        <p class="challenge-subtitle">Finish incomplete Python functions and test your understanding of core concepts.</p>
+                    </div>
+                </article>
+            </a>
 
-            <article class="challenge-card complete-code">
-                <div class="exp-badge">+75 EXP</div>
-                <div class="challenge-cover">
-                    <img src="/images/logo.png" alt="Challenge cover">
-                </div>
-                <div class="challenge-body">
-                    <span class="challenge-type">Complete the Code</span>
-                    <h3 class="challenge-title">Logic Puzzles</h3>
-                    <p class="challenge-subtitle">Complete control flow and data manipulation code snippets step by step.</p>
-                </div>
-            </article>
+            <a th:href="@{/challenge/completecode/2}" style="text-decoration: none; color: inherit;">
+                <article class="challenge-card complete-code">
+                    <div class="exp-badge">+75 EXP</div>
+                    <div class="challenge-cover">
+                        <img src="/images/logo.png" alt="Challenge cover">
+                    </div>
+                    <div class="challenge-body">
+                        <span class="challenge-type">Complete the Code</span>
+                        <h3 class="challenge-title">Logic Puzzles</h3>
+                        <p class="challenge-subtitle">Complete control flow and data manipulation code snippets step by step.</p>
+                    </div>
+                </article>
+            </a>
 
             <!-- Quiz Challenges -->
-            <article class="challenge-card quiz">
-                <div class="exp-badge">+100 EXP</div>
-                <div class="challenge-cover">
-                    <img src="/images/logo.png" alt="Challenge cover">
-                </div>
-                <div class="challenge-body">
-                    <span class="challenge-type">Quiz</span>
-                    <h3 class="challenge-title">Python Fundamentals Quiz</h3>
-                    <p class="challenge-subtitle">Test your knowledge with multiple-choice questions on Python basics and syntax.</p>
-                </div>
-            </article>
+            <a th:href="@{/challenge/quiz/1}" style="text-decoration: none; color: inherit;">
+                <article class="challenge-card quiz">
+                    <div class="exp-badge">+100 EXP</div>
+                    <div class="challenge-cover">
+                        <img src="/images/logo.png" alt="Challenge cover">
+                    </div>
+                    <div class="challenge-body">
+                        <span class="challenge-type">Quiz</span>
+                        <h3 class="challenge-title">Python Fundamentals Quiz</h3>
+                        <p class="challenge-subtitle">Test your knowledge with multiple-choice questions on Python basics and syntax.</p>
+                    </div>
+                </article>
+            </a>
 
-            <article class="challenge-card quiz">
-                <div class="exp-badge">+150 EXP</div>
-                <div class="challenge-cover">
-                    <img src="/images/logo.png" alt="Challenge cover">
-                </div>
-                <div class="challenge-body">
-                    <span class="challenge-type">Quiz</span>
-                    <h3 class="challenge-title">Advanced Concepts</h3>
-                    <p class="challenge-subtitle">Challenge yourself with questions on OOP, decorators, and Python internals.</p>
-                </div>
-            </article>
+            <a th:href="@{/challenge/quiz/2}" style="text-decoration: none; color: inherit;">
+                <article class="challenge-card quiz">
+                    <div class="exp-badge">+150 EXP</div>
+                    <div class="challenge-cover">
+                        <img src="/images/logo.png" alt="Challenge cover">
+                    </div>
+                    <div class="challenge-body">
+                        <span class="challenge-type">Quiz</span>
+                        <h3 class="challenge-title">Advanced Concepts</h3>
+                        <p class="challenge-subtitle">Challenge yourself with questions on OOP, decorators, and Python internals.</p>
+                    </div>
+                </article>
+            </a>
 
             <!-- Debugging Challenges -->
-            <article class="challenge-card debugging">
-                <div class="exp-badge">+125 EXP</div>
-                <div class="challenge-cover">
-                    <img src="/images/logo.png" alt="Challenge cover">
-                </div>
-                <div class="challenge-body">
-                    <span class="challenge-type">Debugging</span>
-                    <h3 class="challenge-title">Find the Bug</h3>
-                    <p class="challenge-subtitle">Identify and fix errors in broken Python code. Sharpen your debugging skills.</p>
-                </div>
-            </article>
+            <a th:href="@{/challenge/debugging/1}" style="text-decoration: none; color: inherit;">
+                <article class="challenge-card debugging">
+                    <div class="exp-badge">+125 EXP</div>
+                    <div class="challenge-cover">
+                        <img src="/images/logo.png" alt="Challenge cover">
+                    </div>
+                    <div class="challenge-body">
+                        <span class="challenge-type">Debugging</span>
+                        <h3 class="challenge-title">Find the Bug</h3>
+                        <p class="challenge-subtitle">Identify and fix errors in broken Python code. Sharpen your debugging skills.</p>
+                    </div>
+                </article>
+            </a>
 
-            <article class="challenge-card debugging">
-                <div class="exp-badge">+100 EXP</div>
-                <div class="challenge-cover">
-                    <img src="/images/logo.png" alt="Challenge cover">
-                </div>
-                <div class="challenge-body">
-                    <span class="challenge-type">Debugging</span>
-                    <h3 class="challenge-title">Syntax Errors Hunt</h3>
-                    <p class="challenge-subtitle">Locate syntax errors, logic mistakes, and exception triggers in code snippets.</p>
-                </div>
-            </article>
+            <a th:href="@{/challenge/debugging/2}" style="text-decoration: none; color: inherit;">
+                <article class="challenge-card debugging">
+                    <div class="exp-badge">+100 EXP</div>
+                    <div class="challenge-cover">
+                        <img src="/images/logo.png" alt="Challenge cover">
+                    </div>
+                    <div class="challenge-body">
+                        <span class="challenge-type">Debugging</span>
+                        <h3 class="challenge-title">Syntax Errors Hunt</h3>
+                        <p class="challenge-subtitle">Locate syntax errors, logic mistakes, and exception triggers in code snippets.</p>
+                    </div>
+                </article>
+            </a>
 
             <!-- Code Sprint Challenges -->
-            <article class="challenge-card code-sprint">
-                <div class="exp-badge">+200 EXP</div>
-                <div class="challenge-cover">
-                    <img src="/images/logo.png" alt="Challenge cover">
-                </div>
-                <div class="challenge-body">
-                    <span class="challenge-type">Code Sprint</span>
-                    <h3 class="challenge-title">Speed Coding Challenge</h3>
-                    <p class="challenge-subtitle">Race against the clock! Solve problems under time pressure and improve your speed.</p>
-                </div>
-            </article>
+            <a th:href="@{/challenge/codesprint/1}" style="text-decoration: none; color: inherit;">
+                <article class="challenge-card code-sprint">
+                    <div class="exp-badge">+200 EXP</div>
+                    <div class="challenge-cover">
+                        <img src="/images/logo.png" alt="Challenge cover">
+                    </div>
+                    <div class="challenge-body">
+                        <span class="challenge-type">Code Sprint</span>
+                        <h3 class="challenge-title">Speed Coding Challenge</h3>
+                        <p class="challenge-subtitle">Race against the clock! Solve problems under time pressure and improve your speed.</p>
+                    </div>
+                </article>
+            </a>
 
-            <article class="challenge-card code-sprint">
-                <div class="exp-badge">+250 EXP</div>
-                <div class="challenge-cover">
-                    <img src="/images/logo.png" alt="Challenge cover">
-                </div>
-                <div class="challenge-body">
-                    <span class="challenge-type">Code Sprint</span>
-                    <h3 class="challenge-title">5-Minute Challenge</h3>
-                    <p class="challenge-subtitle">Complete coding tasks within 5 minutes. Perfect your quick problem-solving skills.</p>
-                </div>
-            </article>
+            <a th:href="@{/challenge/codesprint/2}" style="text-decoration: none; color: inherit;">
+                <article class="challenge-card code-sprint">
+                    <div class="exp-badge">+250 EXP</div>
+                    <div class="challenge-cover">
+                        <img src="/images/logo.png" alt="Challenge cover">
+                    </div>
+                    <div class="challenge-body">
+                        <span class="challenge-type">Code Sprint</span>
+                        <h3 class="challenge-title">5-Minute Challenge</h3>
+                        <p class="challenge-subtitle">Complete coding tasks within 5 minutes. Perfect your quick problem-solving skills.</p>
+                    </div>
+                </article>
+            </a>
         </section>
     </main>
 

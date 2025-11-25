@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${challengeTitle != null ? challengeTitle + ' - EXPy' : 'Quiz - EXPy'}">Quiz - EXPy</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Gamja+Flower&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/challenges.css">
+    <link rel="stylesheet" href="/css/challenge-detail.css">
+</head>
+<body>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Back Button -->
+        <a th:href="@{/challenges}" class="back-button">← Back to Challenges</a>
+
+        <!-- Challenge Header -->
+        <section class="challenge-header">
+            <div class="challenge-meta">
+                <span class="challenge-type-badge quiz">Quiz</span>
+                <h1 class="challenge-title" th:text="${challengeTitle != null ? challengeTitle : 'Python Fundamentals Quiz'}">Python Fundamentals Quiz</h1>
+                <p class="challenge-description" 
+                   th:text="${challengeDescription != null ? challengeDescription : 'Test your knowledge with multiple-choice questions on Python basics and syntax.'}">
+                    Test your knowledge with multiple-choice questions on Python basics and syntax.
+                </p>
+            </div>
+
+            <div class="challenge-rewards">
+                <div class="exp-badge-large">
+                    <span class="exp-label">Reward</span>
+                    <span class="exp-value" th:text="${expReward != null ? '+ ' + expReward + ' EXP' : '+ 100 EXP'}">+ 100 EXP</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Progress Bar -->
+        <section class="quiz-progress">
+            <div class="progress-info">
+                <span>Question <span id="current-question">1</span> of <span id="total-questions" th:text="${totalQuestions != null ? totalQuestions : questions != null ? questions.size() : 5}">5</span></span>
+                <span class="progress-percent" id="progress-percent">0%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-bar" id="quiz-progress-bar" style="width: 0%"></div>
+            </div>
+        </section>
+
+        <!-- Quiz Questions -->
+        <section class="quiz-questions" id="quiz-container">
+            <!-- Question will be dynamically loaded or use Thymeleaf -->
+            <div class="question-card" th:each="question, iterStat : ${questions != null ? questions : {}}">
+                <div class="question-header">
+                    <span class="question-number">Question <span th:text="${iterStat.count}">1</span></span>
+                    <span class="question-points" th:if="${question.points != null}"><span th:text="${question.points}">10</span> points</span>
+                </div>
+                <div class="question-body">
+                    <p class="question-text" th:text="${question.text != null ? question.text : 'What is the output of print(2 + 3 * 4)?'}">
+                        What is the output of print(2 + 3 * 4)?
+                    </p>
+                    <div class="options-list">
+                        <label class="option-item" th:each="option, optIter : ${question.options != null ? question.options : T(java.util.Collections).emptyList()}">
+                            <input type="radio" 
+                                   th:name="'question-' + ${iterStat.count}" 
+                                   th:value="${optIter.count - 1}"
+                                   th:data-correct="${option.correct != null ? option.correct : false}">
+                            <span class="option-text" th:text="${option.text != null ? option.text : 'Option '.concat(optIter.count.toString())}">Option 1</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fallback if no questions provided -->
+            <div class="question-card" th:if="${questions == null || questions.isEmpty()}">
+                <div class="question-header">
+                    <span class="question-number">Question 1</span>
+                    <span class="question-points">10 points</span>
+                </div>
+                <div class="question-body">
+                    <p class="question-text">What is the output of print(2 + 3 * 4)?</p>
+                    <div class="options-list">
+                        <label class="option-item">
+                            <input type="radio" name="question-1" value="0" data-correct="false">
+                            <span class="option-text">14</span>
+                        </label>
+                        <label class="option-item">
+                            <input type="radio" name="question-1" value="1" data-correct="true">
+                            <span class="option-text">20</span>
+                        </label>
+                        <label class="option-item">
+                            <input type="radio" name="question-1" value="2" data-correct="false">
+                            <span class="option-text">24</span>
+                        </label>
+                        <label class="option-item">
+                            <input type="radio" name="question-1" value="3" data-correct="false">
+                            <span class="option-text">Error</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation & Submit -->
+        <section class="quiz-navigation">
+            <div class="nav-actions">
+                <button class="btn-secondary" id="prev-btn" onclick="previousQuestion()" disabled>← Previous</button>
+                <button class="btn-secondary" id="next-btn" onclick="nextQuestion()">Next →</button>
+            </div>
+            <div class="submit-actions">
+                <button class="btn-primary quiz" onclick="submitQuiz()">Submit Quiz</button>
+                <button class="btn-secondary" onclick="reviewAnswers()">Review Answers</button>
+            </div>
+        </section>
+
+        <!-- Results Panel (hidden initially) -->
+        <section class="quiz-results" id="results-panel" style="display: none;">
+            <h2>Quiz Results</h2>
+            <div class="results-summary">
+                <div class="result-stat">
+                    <span class="stat-label">Score</span>
+                    <span class="stat-value" id="score-value">0%</span>
+                </div>
+                <div class="result-stat">
+                    <span class="stat-label">Correct</span>
+                    <span class="stat-value" id="correct-count">0</span>
+                </div>
+                <div class="result-stat">
+                    <span class="stat-label">Total</span>
+                    <span class="stat-value" id="total-count">0</span>
+                </div>
+            </div>
+            <div class="results-actions">
+                <button class="btn-primary quiz" onclick="window.location.href='/challenges'">Back to Challenges</button>
+                <button class="btn-secondary" onclick="retakeQuiz()">Retake Quiz</button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const challengeId = /*[[${challengeId}]]*/ null;
+        let currentQuestionIndex = 0;
+        const questionCards = Array.from(document.querySelectorAll('.question-card'));
+        const totalQuestions = questionCards.length;
+        
+        // Initialize
+        document.getElementById('total-questions').textContent = totalQuestions;
+        updateQuestionVisibility();
+        updateProgress();
+
+        function updateQuestionVisibility() {
+            questionCards.forEach((card, index) => {
+                card.style.display = index === currentQuestionIndex ? 'block' : 'none';
+            });
+            
+            document.getElementById('current-question').textContent = currentQuestionIndex + 1;
+            document.getElementById('prev-btn').disabled = currentQuestionIndex === 0;
+            document.getElementById('next-btn').disabled = currentQuestionIndex === totalQuestions - 1;
+        }
+
+        function updateProgress() {
+            const answered = document.querySelectorAll('input[type="radio"]:checked').length;
+            const percent = totalQuestions > 0 ? Math.round((answered / totalQuestions) * 100) : 0;
+            document.getElementById('progress-percent').textContent = percent + '%';
+            document.getElementById('quiz-progress-bar').style.width = percent + '%';
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < totalQuestions - 1) {
+                currentQuestionIndex++;
+                updateQuestionVisibility();
+                updateProgress();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                updateQuestionVisibility();
+                updateProgress();
+            }
+        }
+
+        // Update progress when answers are selected
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', updateProgress);
+        });
+
+        function submitQuiz() {
+            if (!confirm('Are you sure you want to submit? You cannot change your answers after submission.')) {
+                return;
+            }
+
+            const answers = [];
+            questionCards.forEach((card, index) => {
+                const selected = card.querySelector('input[type="radio"]:checked');
+                answers.push({
+                    questionIndex: index,
+                    selectedValue: selected ? selected.value : null,
+                    isCorrect: selected ? selected.dataset.correct === 'true' : false
+                });
+            });
+
+            // Calculate score
+            const correct = answers.filter(a => a.isCorrect).length;
+            const score = Math.round((correct / totalQuestions) * 100);
+
+            // Show results
+            document.getElementById('score-value').textContent = score + '%';
+            document.getElementById('correct-count').textContent = correct;
+            document.getElementById('total-count').textContent = totalQuestions;
+            document.getElementById('results-panel').style.display = 'block';
+            document.getElementById('quiz-container').style.display = 'none';
+            document.querySelector('.quiz-navigation').style.display = 'none';
+            document.querySelector('.quiz-progress').style.display = 'none';
+
+            // Submit to backend
+            // fetch(`/api/challenges/${challengeId}/submit`, { method: 'POST', body: JSON.stringify({answers}) })
+        }
+
+        function reviewAnswers() {
+            alert('Review feature will highlight correct/incorrect answers.');
+        }
+
+        function retakeQuiz() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
+
