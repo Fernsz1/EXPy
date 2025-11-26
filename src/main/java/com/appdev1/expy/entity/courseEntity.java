@@ -3,6 +3,10 @@ package com.appdev1.expy.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +19,10 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tblCourse")
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "course_id" 
+)
 public class CourseEntity {
 
     @Id
@@ -29,6 +37,7 @@ public class CourseEntity {
 
     // One course contains many modules
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonIdentityReference(alwaysAsId = true)
     private List<ModuleEntity> modules = new ArrayList<>();
 
     @OneToMany(mappedBy = "course")

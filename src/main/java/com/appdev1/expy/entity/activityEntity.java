@@ -2,8 +2,13 @@ package com.appdev1.expy.entity;
 
 
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -17,8 +22,12 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="tblActivity")
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "activity_id" 
+)
 public class ActivityEntity {
-     @Id
+    @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int activity_id;
     private String type;
@@ -34,7 +43,8 @@ public class ActivityEntity {
 
     @ManyToOne
     @JoinColumn(name="lesson_id")
-    @JsonBackReference
+    @JsonBackReference(value = "lesson-activities") 
+    @JsonIdentityReference(alwaysAsId = true)
     private LessonEntity lesson;
 
     @ManyToOne
@@ -43,8 +53,8 @@ public class ActivityEntity {
     private InstructorEntity instructor;
 
     @ManyToMany(mappedBy = "activities")
-    @JsonBackReference
-    private List<StudentEntity> students;
+    @JsonIgnore
+    private Set<StudentEntity> students;
 
     public ActivityEntity() {
         super();
@@ -126,11 +136,11 @@ public class ActivityEntity {
         this.instructor = instructor;
     }
 
-    public List<StudentEntity> getStudents() {
+    public Set<StudentEntity> getStudents() {
         return students;
     }
 
-    public void setStudents(List<StudentEntity> students) {
+    public void setStudents(Set<StudentEntity> students) {
         this.students = students;
     }
 

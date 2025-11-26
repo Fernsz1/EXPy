@@ -20,6 +20,7 @@ public class InstructorEntity extends UserEntity {
     private String bio;
 
     @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference(value = "instructor-reports") 
     private List<ReportEntity> reports = new ArrayList<>();
 
     @OneToMany(mappedBy = "instructor")

@@ -3,7 +3,10 @@ package com.appdev1.expy.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -17,16 +20,28 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="tblLeaderboard")
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "leaderboard_id"
+)
 public class LeaderboardEntity {
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int leaderboard_id;
+
     private String name;
     private String periodType;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    @ManyToMany(mappedBy="leaderboards")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+        name = "student_leaderboard",
+        joinColumns = @JoinColumn(name = "leaderboard_id"),
+        inverseJoinColumns = @JoinColumn(name = "student_id", referencedColumnName = "user_id")
+    )
+    @JsonIdentityReference(alwaysAsId = true)
     private List<StudentEntity> students;
 
     public LeaderboardEntity() {

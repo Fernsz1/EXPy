@@ -2,7 +2,10 @@ package com.appdev1.expy.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +18,10 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="tblLesson")
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "lesson_id" 
+)
 public class LessonEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -26,11 +33,13 @@ public class LessonEntity {
     private int order_index;
 
     @OneToMany(mappedBy="lesson")
-    @JsonManagedReference
+    @JsonManagedReference(value = "lesson-activities")
+    @JsonIdentityReference(alwaysAsId = true)
     private List<ActivityEntity> activities;
 
     @ManyToOne
     @JoinColumn(name="module_id", nullable=false)
+    @JsonIdentityReference(alwaysAsId = true)
     private ModuleEntity module;
 
     public LessonEntity() {

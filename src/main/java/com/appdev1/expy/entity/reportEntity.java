@@ -2,6 +2,12 @@ package com.appdev1.expy.entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,6 +18,10 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tblReport")
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "reportId" 
+)
 public class ReportEntity {
 
     @Id
@@ -24,10 +34,13 @@ public class ReportEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "instructor_id", referencedColumnName = "user_id")
+    @JsonBackReference(value = "instructor-reports") 
     private InstructorEntity instructor;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "student_id", referencedColumnName = "user_id")
+    //@JsonBackReference(value = "student-reports") 
+    @JsonIdentityReference(alwaysAsId = true)
     private StudentEntity student;
 
     public ReportEntity() {}
