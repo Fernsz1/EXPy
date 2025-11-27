@@ -7,7 +7,6 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.ElementCollection;
@@ -43,17 +42,16 @@ public class ActivityEntity {
 
     @ManyToOne
     @JoinColumn(name="lesson_id")
-    @JsonBackReference(value = "lesson-activities") 
-    @JsonIdentityReference(alwaysAsId = true)
+    @JsonBackReference(value = "lesson-activities") //prevents circular reference during serialization -z
     private LessonEntity lesson;
 
     @ManyToOne
     @JoinColumn(name = "instructor_id",  referencedColumnName = "user_id")
-    @JsonBackReference(value = "instructor-activities")
+    @JsonBackReference(value = "instructor-activities") //prevents circular reference during serialization -z
     private InstructorEntity instructor;
 
     @ManyToMany(mappedBy = "activities")
-    @JsonIgnore
+    @JsonIdentityReference(alwaysAsId = true) //shows only IDs of students to prevent circular reference -z
     private Set<StudentEntity> students;
 
     public ActivityEntity() {

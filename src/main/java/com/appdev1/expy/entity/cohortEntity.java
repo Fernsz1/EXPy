@@ -3,6 +3,11 @@ package com.appdev1.expy.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,6 +21,10 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="tblCohort")
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "cohort_id" 
+) // this shows the ID instead of the full object to prevent circular reference -z
 public class CohortEntity {
 
     @Id
@@ -30,10 +39,12 @@ public class CohortEntity {
     
     @ManyToOne
     @JoinColumn(name="instructor_id", referencedColumnName = "user_id", nullable=false)
+    @JsonIdentityReference(alwaysAsId = true) //shows only ID to prevent circular reference -z
     private InstructorEntity instructor;
 
     @ManyToOne
     @JoinColumn(name="course_id", referencedColumnName = "course_id", nullable=false)
+    @JsonBackReference(value = "course-cohorts") //prevents circular reference during serialization -z
     private CourseEntity course;
 
     @ManyToMany
@@ -42,6 +53,7 @@ public class CohortEntity {
         joinColumns = @JoinColumn(name = "cohort_id"),
         inverseJoinColumns = @JoinColumn(name = "student_id", referencedColumnName= "user_id")
     )
+    @JsonIdentityReference(alwaysAsId = true) //shows only IDs to prevent circular reference -z
     private Set<UserEntity> students = new HashSet<>();
 
     public CohortEntity() {

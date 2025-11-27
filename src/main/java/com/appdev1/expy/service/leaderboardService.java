@@ -8,13 +8,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.appdev1.expy.controller.StudentController;
 import com.appdev1.expy.entity.LeaderboardEntity;
 import com.appdev1.expy.entity.StudentEntity;
-import com.appdev1.expy.entity.UserEntity;
 import com.appdev1.expy.repository.StudentRepository;
 import com.appdev1.expy.repository.leaderboardRepository;
-import com.appdev1.expy.repository.userRepository;
 
 @Service
 public class leaderboardService {
@@ -57,7 +54,7 @@ public class leaderboardService {
             newLeaderboard.setName(leaderboard.getName());
             newLeaderboard.setPeriodType(leaderboard.getPeriodType());
             newLeaderboard.setStartDate(leaderboard.getStartDate());
-
+            newLeaderboard.setStudents(leaderboard.getStudents());
             leaderboardRep.save(newLeaderboard);
             return leaderboardRep.save(newLeaderboard);
 

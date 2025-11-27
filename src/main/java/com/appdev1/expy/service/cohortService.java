@@ -37,7 +37,8 @@ public class cohortService {
             existingCohort = cohortRepository.findById(cohort_id).get();
             existingCohort.setName(cohort.getName());
             existingCohort.setDescription(cohort.getDescription());
-    
+            existingCohort.setInstructor(cohort.getInstructor());
+            existingCohort.setStudents(cohort.getStudents());
             cohortRepository.save(existingCohort);
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException("Error updating cohort: " + e.getMessage());

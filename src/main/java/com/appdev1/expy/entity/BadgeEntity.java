@@ -3,6 +3,8 @@ package com.appdev1.expy.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +26,7 @@ public class BadgeEntity {
     private String criteria;
 
     @ManyToMany(mappedBy = "badges")
+    @JsonIgnore //hides students who have this badge to prevent circular reference -z
     private Set<StudentEntity> students = new HashSet<>();
     
     public BadgeEntity(){

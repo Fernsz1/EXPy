@@ -41,7 +41,8 @@ public class courseService {
             newCourse = courseRepository.findById(course_id).get();
             newCourse.setTitle(course.getTitle());
             newCourse.setDescription(course.getDescription());
-    
+            newCourse.setCohorts(course.getCohorts());
+            newCourse.setModules(course.getModules());
             courseRepository.save(newCourse);
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException("Error updating cohort: " + e.getMessage());

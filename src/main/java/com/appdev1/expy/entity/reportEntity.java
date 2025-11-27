@@ -2,10 +2,8 @@ package com.appdev1.expy.entity;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Entity;
@@ -34,12 +32,15 @@ public class ReportEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "instructor_id", referencedColumnName = "user_id")
-    @JsonBackReference(value = "instructor-reports") 
+    //@JsonBackReference(value = "instructor-reports")  - no back reference here since we need
+    //to see which instructor generated the report when fetching reports -z
+    @JsonIdentityReference(alwaysAsId = true)
     private InstructorEntity instructor;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "student_id", referencedColumnName = "user_id")
-    //@JsonBackReference(value = "student-reports") 
+    //@JsonBackReference(value = "student-reports") - no back reference here since we need to see 
+    // who the report is for when fetching reports -z
     @JsonIdentityReference(alwaysAsId = true)
     private StudentEntity student;
 

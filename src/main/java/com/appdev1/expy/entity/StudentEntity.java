@@ -4,10 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
@@ -31,7 +30,8 @@ public class StudentEntity extends UserEntity {
     private int current_streak;
 
     @OneToMany(mappedBy = "student")
-    //@JsonBackReference(value = "student-reports") 
+    //@JsonManagedReference(value = "student-reports") //dont need since back reference is removed - prevents circular reference during serialization -z
+    @JsonIdentityReference(alwaysAsId = true)
     private List<ReportEntity> reports;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
@@ -40,9 +40,11 @@ public class StudentEntity extends UserEntity {
         joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "activity_id")
     )
+    @JsonIgnore
     private Set<ActivityEntity> activities = new HashSet<>();
     
     @ManyToMany(mappedBy = "students")
+    @JsonIdentityReference(alwaysAsId = true)
     private Set<CohortEntity> cohorts = new HashSet<>();
 
     @ManyToMany(mappedBy = "students")
@@ -55,6 +57,7 @@ public class StudentEntity extends UserEntity {
         joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "badge_id")
     )
+    @JsonIdentityReference(alwaysAsId = true)
     private Set<BadgeEntity> badges = new HashSet<>();
 
     public StudentEntity() {

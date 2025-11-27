@@ -2,8 +2,10 @@ package com.appdev1.expy.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
@@ -46,10 +48,12 @@ public class ModuleEntity {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
-    @JsonIdentityReference(alwaysAsId = true)
+    @JsonBackReference(value = "course-modules")
     private CourseEntity course;
 
     @OneToMany(mappedBy = "module")
+    @JsonManagedReference(value = "module-lessons")
+    @JsonIdentityReference(alwaysAsId = true)
     private List<LessonEntity> lessons;
 
     public ModuleEntity() {}

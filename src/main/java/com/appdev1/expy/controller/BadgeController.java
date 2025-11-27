@@ -46,8 +46,8 @@ public class BadgeController {
     }
 
     @PutMapping("/updateBadge")
-    public BadgeEntity updateBadge(@RequestParam int badgeId, @RequestBody BadgeEntity updatedBadgeDetails) {
-        return badgeService.updateBadge(badgeId, updatedBadgeDetails);
+    public BadgeEntity updateBadge(@RequestParam int badge_id, @RequestBody BadgeEntity updatedBadgeDetails) {
+        return badgeService.updateBadge(badge_id, updatedBadgeDetails);
     }
 
     @DeleteMapping("/deleteBadge/{id}")

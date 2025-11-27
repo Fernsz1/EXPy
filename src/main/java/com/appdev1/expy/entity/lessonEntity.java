@@ -2,6 +2,7 @@ package com.appdev1.expy.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -39,7 +40,7 @@ public class LessonEntity {
 
     @ManyToOne
     @JoinColumn(name="module_id", nullable=false)
-    @JsonIdentityReference(alwaysAsId = true)
+    @JsonBackReference(value = "module-lessons")
     private ModuleEntity module;
 
     public LessonEntity() {
