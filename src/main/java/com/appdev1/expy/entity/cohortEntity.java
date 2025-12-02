@@ -3,7 +3,6 @@ package com.appdev1.expy.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -44,7 +43,7 @@ public class CohortEntity {
 
     @ManyToOne
     @JoinColumn(name="course_id", referencedColumnName = "course_id", nullable=false)
-    @JsonBackReference(value = "course-cohorts") //prevents circular reference during serialization -z
+    //@JsonBackReference(value = "course-cohorts") //prevents circular reference during serialization -z
     private CourseEntity course;
 
     @ManyToMany
@@ -54,7 +53,7 @@ public class CohortEntity {
         inverseJoinColumns = @JoinColumn(name = "student_id", referencedColumnName= "user_id")
     )
     @JsonIdentityReference(alwaysAsId = true) //shows only IDs to prevent circular reference -z
-    private Set<UserEntity> students = new HashSet<>();
+    private Set<StudentEntity> students = new HashSet<>();
 
     public CohortEntity() {
         super();
@@ -101,11 +100,11 @@ public class CohortEntity {
         this.course = course;
     }
 
-    public Set<UserEntity> getStudents() {
+    public Set<StudentEntity> getStudents() {
         return students;
     }
 
-    public void setStudents(Set<UserEntity> students) {
+    public void setStudents(Set<StudentEntity> students) {
         this.students = students;
     }
 

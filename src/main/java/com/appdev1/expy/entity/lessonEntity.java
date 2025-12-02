@@ -2,10 +2,8 @@ package com.appdev1.expy.entity;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Entity;
@@ -34,13 +32,14 @@ public class LessonEntity {
     private int order_index;
 
     @OneToMany(mappedBy="lesson")
-    @JsonManagedReference(value = "lesson-activities")
+    //@JsonManagedReference(value = "lesson-activities")
     @JsonIdentityReference(alwaysAsId = true)
     private List<ActivityEntity> activities;
 
     @ManyToOne
     @JoinColumn(name="module_id", nullable=false)
-    @JsonBackReference(value = "module-lessons")
+    //@JsonBackReference(value = "module-lessons")
+    @JsonIdentityReference(alwaysAsId= true)
     private ModuleEntity module;
 
     public LessonEntity() {

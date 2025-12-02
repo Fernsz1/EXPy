@@ -3,8 +3,9 @@ package com.appdev1.expy.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -18,6 +19,10 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tblCourse")
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "course_id" 
+)
 public class CourseEntity {
 
     @Id
@@ -31,12 +36,12 @@ public class CourseEntity {
     private String description;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference(value = "course-modules") //prevents circular reference during serialization -z
+    //@JsonManagedReference(value = "course-modules") //prevents circular reference during serialization -z
     @JsonIdentityReference(alwaysAsId = true) //shows only IDs to prevent circular reference -z
     private List<ModuleEntity> modules = new ArrayList<>();
 
     @OneToMany(mappedBy = "course")
-    @JsonManagedReference(value = "course-cohorts") //prevents circular reference during serialization -z
+    //@JsonManagedReference(value = "course-cohorts") //prevents circular reference during serialization -z
     @JsonIdentityReference(alwaysAsId = true) //shows only IDs to prevent circular reference -z
     private List<CohortEntity> cohorts = new ArrayList<>();
 

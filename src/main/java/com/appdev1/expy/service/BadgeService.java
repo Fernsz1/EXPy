@@ -43,6 +43,7 @@ public class BadgeService {
         badge.setDescription(updatedBadge.getDescription());
         badge.setImageUrl(updatedBadge.getImageUrl());
         badge.setCriteria(updatedBadge.getCriteria());
+        badge.setStudents(updatedBadge.getStudents());
         // badge.setStudent(updatedBadge.getStudent());
 
         return badgeRepository.save(badge);

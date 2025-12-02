@@ -1,5 +1,6 @@
 package com.appdev1.expy.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -7,10 +8,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.appdev1.expy.entity.BadgeEntity;
 import com.appdev1.expy.entity.StudentEntity;
 import com.appdev1.expy.entity.UserEntity;
 import com.appdev1.expy.repository.StudentRepository;
 import com.appdev1.expy.repository.userRepository;
+import com.appdev1.expy.repository.BadgeRepository;
 
 @Service
 public class StudentService {
@@ -22,7 +25,7 @@ public class StudentService {
 
     @Autowired
     private userService userService;
-
+    
     public StudentService(StudentRepository studentRepository,
                           userRepository userRepository,
                           userService userService) {
@@ -58,6 +61,7 @@ public class StudentService {
         student.setTotal_exp(updatedStudent.getTotal_exp());
         student.setLevel(updatedStudent.getLevel());
         student.setCurrent_streak(updatedStudent.getCurrent_streak());
+        student.setBadges(updatedStudent.getBadges());
         // student.setReports(updatedStudent.getReports());
         // student.setActivities(updatedStudent.getActivities());
         // student.setCohorts(updatedStudent.getCohorts());

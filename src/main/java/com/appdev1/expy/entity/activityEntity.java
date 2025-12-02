@@ -4,7 +4,6 @@ package com.appdev1.expy.entity;
 import java.util.List;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -42,12 +41,14 @@ public class ActivityEntity {
 
     @ManyToOne
     @JoinColumn(name="lesson_id")
-    @JsonBackReference(value = "lesson-activities") //prevents circular reference during serialization -z
+    //@JsonBackReference(value = "lesson-activities") //prevents circular reference during serialization -z
+    @JsonIdentityReference(alwaysAsId = true) //shows only ID to prevent circular reference -z
     private LessonEntity lesson;
 
     @ManyToOne
     @JoinColumn(name = "instructor_id",  referencedColumnName = "user_id")
-    @JsonBackReference(value = "instructor-activities") //prevents circular reference during serialization -z
+    //@JsonBackReference(value = "instructor-activities") //prevents circular reference during serialization -z
+    @JsonIdentityReference(alwaysAsId = true) //shows only ID to prevent circular reference -z
     private InstructorEntity instructor;
 
     @ManyToMany(mappedBy = "activities")
